@@ -7,3 +7,15 @@
 //
 
 import Foundation
+
+
+struct PlaceData: Decodable{
+    let postalCodes: [Place]
+}
+
+struct Place: Decodable{
+    let placeName: String
+    let lng: Double
+    let lat: Double
+    let countryCode: String
+}

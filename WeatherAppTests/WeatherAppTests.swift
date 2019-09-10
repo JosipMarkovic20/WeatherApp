@@ -6,4 +6,54 @@
 //  Copyright © 2019 Josip Marković. All rights reserved.
 //
 
-import Foundation
+@testable import WeatherApp
+import Cuckoo
+import Quick
+import Nimble
+import RxSwift
+import RxTest
+import RxSwift
+
+class MainScreenViewModelTests: QuickSpec {
+    
+    
+    
+    override func spec(){
+        
+        
+        describe("Data initialization"){
+            
+            let mockWeatherRepository = MockWeatherRepository()
+            var viewModel: MainScreenViewModelProtocol
+            var testScheduler: TestScheduler!
+            
+            
+            beforeSuite {
+                Cuckoo.stub(mockWeatherRepository){ mock in
+                    let testBundle = Bundle(for: MainScreenViewModelTests.self)
+                    let responseURL = testBundle.url(forResource: "WeatherResponse", withExtension: "json")!
+                    let responseData = try! Data(contentsOf: responseURL)
+                    let parsedData = try! JSONDecoder().decode(Weather.self, from: responseData)
+                    when(mock.getWeather()).thenReturn(Observable.just(parsedData))
+                }
+            }
+            
+            context("Testing received data"){
+                beforeEach {
+                    testScheduler = TestScheduler(initialClock: 1)
+                    viewModel = MainScreenViewModel()
+                }
+                
+                
+            }
+            
+            
+            
+        }
+        
+        
+    }
+    
+    
+    
+}

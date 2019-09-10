@@ -1,0 +1,26 @@
+{
+    "postalCodes": [
+        {
+            "adminName3": "Slavonski Brod",
+            "adminCode1": "02",
+            "lng": 18.0269444,
+            "countryCode": "HR",
+            "postalCode": "35000",
+            "adminName1": "Brodsko-Posavska",
+            "ISO3166-2": "12",
+            "placeName": "Podvinje",
+            "lat": 45.1902778
+        },
+        {
+            "adminName3": "Križevci",
+            "adminCode1": "06",
+            "lng": 16.501189855022265,
+            "countryCode": "HR",
+            "postalCode": "48260",
+            "adminName1": "Koprivničko-Križevačka",
+            "ISO3166-2": "06",
+            "placeName": "Podvinje Miholečko",
+            "lat": 46.053021221536305
+        }
+    ]
+}

@@ -27,6 +27,9 @@
 		5F0B25F12327C2DB005B9BA3 /* SettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25F02327C2DB005B9BA3 /* SettingsScreenViewModel.swift */; };
 		5F0B25F32327C2ED005B9BA3 /* SettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25F22327C2ED005B9BA3 /* SettingsScreenCoordinator.swift */; };
 		5F0B25F52327C48A005B9BA3 /* CoordinatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25F42327C48A005B9BA3 /* CoordinatorDelegates.swift */; };
+		5F0B25F72327C9E9005B9BA3 /* WeatherRespones.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F0B25F62327C9E9005B9BA3 /* WeatherRespones.json */; };
+		5F0B25F92327CA00005B9BA3 /* PlacesSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F0B25F82327CA00005B9BA3 /* PlacesSearchResponse.json */; };
+		5F0B25FD2327CBA2005B9BA3 /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25FC2327CBA2005B9BA3 /* GeneratedMocks.swift */; };
 		5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3E68F92327BB8600E727DE /* AppDelegate.swift */; };
 		5F3E69012327BB8600E727DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69002327BB8600E727DE /* Assets.xcassets */; };
 		5F3E69042327BB8600E727DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69022327BB8600E727DE /* LaunchScreen.storyboard */; };
@@ -67,6 +70,9 @@
 		5F0B25F02327C2DB005B9BA3 /* SettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5F0B25F22327C2ED005B9BA3 /* SettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		5F0B25F42327C48A005B9BA3 /* CoordinatorDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorDelegates.swift; sourceTree = "<group>"; };
+		5F0B25F62327C9E9005B9BA3 /* WeatherRespones.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = WeatherRespones.json; sourceTree = "<group>"; };
+		5F0B25F82327CA00005B9BA3 /* PlacesSearchResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PlacesSearchResponse.json; sourceTree = "<group>"; };
+		5F0B25FC2327CBA2005B9BA3 /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
 		5F3E68F62327BB8600E727DE /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F3E68F92327BB8600E727DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F3E69002327BB8600E727DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -254,8 +260,11 @@
 		5F3E690D2327BB8600E727DE /* WeatherAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				5F3E69102327BB8700E727DE /* Info.plist */,
+				5F0B25F62327C9E9005B9BA3 /* WeatherRespones.json */,
+				5F0B25F82327CA00005B9BA3 /* PlacesSearchResponse.json */,
+				5F0B25FC2327CBA2005B9BA3 /* GeneratedMocks.swift */,
 				5F0B25BD2327C082005B9BA3 /* WeatherAppTests.swift */,
+				5F3E69102327BB8700E727DE /* Info.plist */,
 				5F0B25BC2327C082005B9BA3 /* WeatherAppTests-Bridging-Header.h */,
 			);
 			path = WeatherAppTests;
@@ -288,6 +297,7 @@
 			buildConfigurationList = 5F3E69162327BB8700E727DE /* Build configuration list for PBXNativeTarget "WeatherAppTests" */;
 			buildPhases = (
 				7A33FD452EFB12A768228FB8 /* [CP] Check Pods Manifest.lock */,
+				5F0B25FB2327CAAB005B9BA3 /* Generate Mocks */,
 				5F3E69062327BB8600E727DE /* Sources */,
 				5F3E69072327BB8600E727DE /* Frameworks */,
 				5F3E69082327BB8600E727DE /* Resources */,
@@ -356,6 +366,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F0B25F72327C9E9005B9BA3 /* WeatherRespones.json in Resources */,
+				5F0B25F92327CA00005B9BA3 /* PlacesSearchResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,6 +395,27 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		5F0B25FB2327CAAB005B9BA3 /* Generate Mocks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/WeatherApp/Networking/WeatherRepository.swift",
+				"$(SRCROOT)/WeatherApp/Networking/PlaceNameRepository.swift",
+			);
+			name = "Generate Mocks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${PROJECT_DIR}/${TARGET_NAME}/GeneratedMocks.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Define output file. Change \"${PROJECT_DIR}/${PROJECT_NAME}Tests\" to your test's root source folder, if it's not the default name.\nOUTPUT_FILE=\"${PROJECT_DIR}/${PROJECT_NAME}Tests/GeneratedMocks.swift\"\necho \"Generated Mocks File = ${OUTPUT_FILE}\"\n\n# Define input directory. Change \"${PROJECT_DIR}/${PROJECT_NAME}\" to your project's root source folder, if it's not the default name.\nINPUT_DIR=\"${PROJECT_DIR}/${PROJECT_NAME}\"\necho \"Mocks Input Directory = ${INPUT_DIR}\"\n\n# Generate mock files, include as many input files as you'd like to create mocks for.\n\"${PODS_ROOT}/Cuckoo/run\" generate --testable \"${PROJECT_NAME}\" \\\n--output \"${OUTPUT_FILE}\" \n# ... and so forth, the last line should never end with a backslash\n\n# After running once, locate `GeneratedMocks.swift` and drag it into your Xcode test target group.\n\n\n";
 		};
 		7A33FD452EFB12A768228FB8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -475,6 +508,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F0B25BE2327C082005B9BA3 /* WeatherAppTests.swift in Sources */,
+				5F0B25FD2327CBA2005B9BA3 /* GeneratedMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
