@@ -8,8 +8,55 @@
 
 import Foundation
 import Alamofire
-
+import RxSwift
 
 class AlamofireManager{
+    let jsonDecoder = JSONDecoder()
+    
+    func getWeatherAlamofireWay(jsonUrlString: String) -> Observable<Weather>{
+        
+        return Observable.create{observer in
+            Alamofire.request(jsonUrlString)
+                .validate()
+                .responseJSON {[unowned self] response in
+                    do{
+                        guard let data = response.data else { return }
+                        let weatherResponse = try self.jsonDecoder.decode(Weather.self, from: data)
+                        observer.onNext(weatherResponse)
+                        observer.onCompleted()
+                    } catch let jsonErr{
+                        print("Error parsing json: ",jsonErr)
+                        observer.onError(jsonErr)
+                    }
+            }
+            return Disposables.create {
+                Alamofire.request(jsonUrlString).cancel()
+            }
+        }
+    }
+    
+    
+    func getPlaceAlamofireWay(jsonUrlString: String) -> Observable<Place>{
+        
+        return Observable.create{observer in
+            Alamofire.request(jsonUrlString)
+                .validate()
+                .responseJSON {[unowned self] response in
+                    do{
+                        guard let data = response.data else { return }
+                        let placeResponse = try self.jsonDecoder.decode(Place.self, from: data)
+                        observer.onNext(placeResponse)
+                        observer.onCompleted()
+                    } catch let jsonErr{
+                        print("Error parsing json: ",jsonErr)
+                        observer.onError(jsonErr)
+                    }
+            }
+            return Disposables.create {
+                Alamofire.request(jsonUrlString).cancel()
+            }
+        }
+    }
+    
     
 }

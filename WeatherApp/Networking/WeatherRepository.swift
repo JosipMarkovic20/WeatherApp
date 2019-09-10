@@ -8,8 +8,14 @@
 
 import Foundation
 import Alamofire
-
+import RxSwift
 
 class WeatherRepository{
     
+    let alamofire = AlamofireManager()
+    
+    func getWeather(lng: Double, lat: Double) -> Observable<Weather>{
+        let weatherURL = "https://api.darksky.net/forecast/d9876cf842eb1bb73368fbaca7b084d0/" + String(lat) + ",\(String(lng))"
+        return alamofire.getWeatherAlamofireWay(jsonUrlString: weatherURL)
+    }
 }

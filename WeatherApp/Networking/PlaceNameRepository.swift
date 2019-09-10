@@ -8,8 +8,14 @@
 
 import Foundation
 import Alamofire
-
+import RxSwift
 
 class PlaceNameRepository{
     
+    let alamofire = AlamofireManager()
+    
+    func getPlace(name: String) -> Observable<Place>{
+        let placeURL = "http://api.geonames.org/postalCodeSearchJSON?placename=" + "\(name)&maxRows=10&username=jmarkovic"
+        return alamofire.getPlaceAlamofireWay(jsonUrlString: placeURL)
+    }
 }

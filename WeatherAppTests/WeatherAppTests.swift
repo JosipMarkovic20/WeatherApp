@@ -26,6 +26,7 @@ class MainScreenViewModelTests: QuickSpec {
             let mockWeatherRepository = MockWeatherRepository()
             var viewModel: MainScreenViewModelProtocol
             var testScheduler: TestScheduler!
+            let disposeBag = DisposeBag()
             
             
             beforeSuite {
@@ -34,14 +35,15 @@ class MainScreenViewModelTests: QuickSpec {
                     let responseURL = testBundle.url(forResource: "WeatherResponse", withExtension: "json")!
                     let responseData = try! Data(contentsOf: responseURL)
                     let parsedData = try! JSONDecoder().decode(Weather.self, from: responseData)
-                    when(mock.getWeather()).thenReturn(Observable.just(parsedData))
+                    when(mock.getWeather(lng: any(), lat: any())).thenReturn(Observable.just(parsedData))
                 }
             }
             
             context("Testing received data"){
                 beforeEach {
                     testScheduler = TestScheduler(initialClock: 1)
-                    viewModel = MainScreenViewModel()
+                    viewModel = MainScreenViewModel(weatherRepository: mockWeatherRepository, subscribeScheduler: testScheduler)
+                    viewModel.collectAndPrepareData(for: viewModel.getWeatherDataSubject).disposed(by: disposeBag)
                 }
                 
                 

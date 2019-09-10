@@ -7,14 +7,27 @@
 //
 
 import Foundation
+import RxSwift
 
 
+class MainScreenViewModel: MainScreenViewModelProtocol{
+    
+    
+    var weatherResponse: Weather?
+    var weatherRepository: WeatherRepository
+    var subscribeScheduler: SchedulerType
+    var loaderSubject = ReplaySubject<Bool>.create(bufferSize: 1)
+    
+    
+    init(weatherRepository: WeatherRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
+        self.weatherRepository = weatherRepository
+        self.subscribeScheduler = subscribeScheduler
+    }
+    
+}
 
-class MainScreenViewModel{
+
+protocol MainScreenViewModelProtocol{
     
-    
-    
-    
-    
-    
+    var weatherResponse: Weather? {get set}
 }
