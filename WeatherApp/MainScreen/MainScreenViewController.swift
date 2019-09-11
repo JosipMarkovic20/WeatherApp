@@ -58,6 +58,12 @@ class MainScreenViewController: UIViewController{
         return label
     }()
     
+    let minAndMaxTemp: UIView = {
+        let minAndMaxView = UIView()
+        minAndMaxView.translatesAutoresizingMaskIntoConstraints = false
+        return minAndMaxView
+    }()
+    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
@@ -90,6 +96,7 @@ class MainScreenViewController: UIViewController{
         self.view.addSubview(temperatureLabel)
         self.view.addSubview(summaryLabel)
         self.view.addSubview(placeLabel)
+        self.view.addSubview(minAndMaxTemp)
         
         setupConstraints()
     }
@@ -121,6 +128,11 @@ class MainScreenViewController: UIViewController{
         placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 10).isActive = true
         placeLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        minAndMaxTemp.topAnchor.constraint(equalToSystemSpacingBelow: placeLabel.bottomAnchor, multiplier: 10).isActive = true
+        minAndMaxTemp.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        minAndMaxTemp.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        minAndMaxTemp.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     func getData(){
@@ -193,7 +205,40 @@ class MainScreenViewController: UIViewController{
         
         temperatureLabel.text = "\(viewModel.weatherResponse?.currently.temperature ?? 0)˚"
         summaryLabel.text = viewModel.weatherResponse?.currently.summary
+        
+        setupMinAndMax()
     }
+    
+    func setupMinAndMax(){
+        let minTempLabel = UILabel()
+        let minLabel = UILabel()
+        let maxTempLabel = UILabel()
+        let maxLabel = UILabel()
+        let divider = UIView()
+        divider.backgroundColor = .white
+        
+        minTempLabel.translatesAutoresizingMaskIntoConstraints = false
+        minLabel.translatesAutoresizingMaskIntoConstraints = false
+        maxTempLabel.translatesAutoresizingMaskIntoConstraints = false
+        maxLabel.translatesAutoresizingMaskIntoConstraints = false
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        
+        minAndMaxTemp.addSubview(minTempLabel)
+        minAndMaxTemp.addSubview(minLabel)
+        minAndMaxTemp.addSubview(maxTempLabel)
+        minAndMaxTemp.addSubview(maxLabel)
+        minAndMaxTemp.addSubview(divider)
+        
+        divider.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        divider.centerXAnchor.constraint(equalTo: minAndMaxTemp.centerXAnchor).isActive = true
+        divider.centerYAnchor.constraint(equalTo: minAndMaxTemp.centerYAnchor).isActive = true
+        divider.widthAnchor.constraint(equalToConstant: 3).isActive = true
+
+
+
+
+    }
+    
     
     func setupSubscriptions(){
         
