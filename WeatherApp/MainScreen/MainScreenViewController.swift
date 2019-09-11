@@ -33,9 +33,35 @@ class MainScreenViewController: UIViewController{
         return gradientView
     }()
     
+    let temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "GothamRounded-Light", size: 72)
+        label.textColor = .white
+        return label
+    }()
+    
+    let summaryLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "GothamRounded-Light", size: 24)
+        label.textColor = .white
+        return label
+    }()
+    
+    let placeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "GothamRounded-Book", size: 36)
+        label.text = "Osijek"
+        label.textColor = .white
+        return label
+    }()
+    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
+    let loader = LoaderViewController()
     
     init(viewModel: MainScreenViewModel){
         self.viewModel = viewModel
@@ -47,12 +73,10 @@ class MainScreenViewController: UIViewController{
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         setupUI()
         toDispose()
         setupSubscriptions()
         getData()
-        
     }
     
     func toDispose(){
@@ -63,7 +87,9 @@ class MainScreenViewController: UIViewController{
         self.view.addSubview(backgroundGradient)
         self.view.addSubview(bodyImage)
         self.view.addSubview(headerImage)
-        self.view.backgroundColor = .white
+        self.view.addSubview(temperatureLabel)
+        self.view.addSubview(summaryLabel)
+        self.view.addSubview(placeLabel)
         
         setupConstraints()
     }
@@ -83,6 +109,18 @@ class MainScreenViewController: UIViewController{
         backgroundGradient.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         backgroundGradient.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        
+        temperatureLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 12).isActive = true
+        temperatureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        temperatureLabel.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        
+        summaryLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor).isActive = true
+        summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 10).isActive = true
+        placeLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func getData(){
@@ -152,6 +190,9 @@ class MainScreenViewController: UIViewController{
             backgroundGradient.gradient = rainGradient
         }
         backgroundGradient.setupUI()
+        
+        temperatureLabel.text = "\(viewModel.weatherResponse?.currently.temperature ?? 0)˚"
+        summaryLabel.text = viewModel.weatherResponse?.currently.summary
     }
     
     func setupSubscriptions(){
@@ -162,6 +203,23 @@ class MainScreenViewController: UIViewController{
             .subscribe {[unowned self] (enumCase) in
                 guard let enumCase = enumCase.element else { return }
                 self.setupScreen(enumCase: enumCase)
+        }.disposed(by: disposeBag)
+        
+        
+        viewModel.loaderSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe {[unowned self] (bool) in
+                if bool.element ?? false{
+                    self.addChild(self.loader)
+                    self.loader.view.frame = self.view.frame
+                    self.view.addSubview(self.loader.view)
+                    self.loader.didMove(toParent: self)
+                }else{
+                    self.loader.willMove(toParent: nil)
+                    self.loader.view.removeFromSuperview()
+                    self.loader.removeFromParent()
+                }
         }.disposed(by: disposeBag)
     }
     

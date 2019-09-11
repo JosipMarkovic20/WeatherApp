@@ -12,7 +12,7 @@ import UIKit
 
 class GradientView: UIView {
     
-    var gradient: CAGradientLayer = CAGradientLayer()
+    var gradient: CAGradientLayer = [GradientColors().dayColorTop, GradientColors().dayColorBottom].gradient()
     
     
     override func layoutSublayers(of layer: CALayer) {
