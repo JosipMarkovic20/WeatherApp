@@ -101,6 +101,14 @@ class MainScreenViewController: UIViewController{
         return button
     }()
     
+    let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.backgroundImage = UIImage()
+        searchBar.placeholder = "Search"
+        return searchBar
+    }()
+    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
@@ -122,8 +130,30 @@ class MainScreenViewController: UIViewController{
         getData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        setupSearchBar()
+    }
+    
     func toDispose(){
         viewModel.collectAndPrepareData(for: viewModel.getWeatherDataSubject).disposed(by: disposeBag)
+    }
+    
+    func setupSearchBar(){
+        let searchTextField:UITextField = searchBar.subviews[0].subviews.last as! UITextField
+        searchTextField.textAlignment = NSTextAlignment.left
+        let image:UIImage = UIImage(named: "search_icon")!
+        let imageView:UIImageView = UIImageView.init(image: image)
+        imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = UIColor(hex: "#6DA133")
+        searchTextField.leftView = nil
+        searchTextField.placeholder = "Search"
+        searchTextField.rightView = imageView
+        searchTextField.rightViewMode = UITextField.ViewMode.always
+        
+        if let backgroundview = searchTextField.subviews.first {
+            backgroundview.layer.cornerRadius = 18;
+            backgroundview.clipsToBounds = true;
+        }
     }
     
     func setupUI(){
@@ -136,6 +166,7 @@ class MainScreenViewController: UIViewController{
         self.view.addSubview(minAndMaxTemp)
         self.view.addSubview(statsView)
         self.view.addSubview(settingsButton)
+        self.view.addSubview(searchBar)
         
         setupConstraints()
     }
@@ -180,6 +211,12 @@ class MainScreenViewController: UIViewController{
         
         settingsButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         settingsButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30).isActive = true
+        settingsButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        settingsButton.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        
+        searchBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: 10).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
     }
     
     func getData(){
