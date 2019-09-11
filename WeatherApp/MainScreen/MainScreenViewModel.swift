@@ -75,8 +75,37 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
             return .tornado
         }
         return .clearDay
+        
+        
     }
     
+    
+    func findMinAndMaxTemperatures() -> (min: Double,max: Double){
+        let currentTime = weatherResponse?.currently.time ?? 0
+        guard let possibleTimes = weatherResponse?.daily.data else { return (0,0)}
+        
+        for daily in possibleTimes{
+            let time = daily.time
+            let possibleDate = convertUnixTimeToDate(unixTime: time)
+            let currentDate = convertUnixTimeToDate(unixTime: currentTime)
+            if possibleDate == currentDate{
+                return (daily.temperatureMin, daily.temperatureMax)
+            }
+        }
+        return (0,0)
+    }
+ 
+    
+    func convertUnixTimeToDate(unixTime: Int) -> String{
+        let date = Date(timeIntervalSince1970: Double(unixTime))
+        let dateFormatter = DateFormatter()
+        let timezone = TimeZone.current.abbreviation() ?? "CET"  // get current TimeZone abbreviation or set to CET
+        dateFormatter.timeZone = TimeZone(abbreviation: timezone) //Set timezone that you want
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "dd.MM.yyyy" //Specify your format that you want
+        let strDate = dateFormatter.string(from: date)
+        return strDate
+    }
 }
 
 

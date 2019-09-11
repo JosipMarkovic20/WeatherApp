@@ -39,6 +39,7 @@
 		5F9891862328DAFB00D9EBD6 /* Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891852328DAED00D9EBD6 /* Book.otf */; };
 		5F9891872328DAFD00D9EBD6 /* Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891842328DAE800D9EBD6 /* Light.otf */; };
 		5F9891892328E68E00D9EBD6 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891882328E68E00D9EBD6 /* Loader.swift */; };
+		5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* Extensions.swift */; };
 		754ED5F073197F7EABEAFA69 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */; };
 		E93AAFA82CA3798BA28216EC /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */; };
 /* End PBXBuildFile section */
@@ -92,6 +93,7 @@
 		5F9891842328DAE800D9EBD6 /* Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Light.otf; sourceTree = "<group>"; };
 		5F9891852328DAED00D9EBD6 /* Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Book.otf; sourceTree = "<group>"; };
 		5F9891882328E68E00D9EBD6 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		5F98918A232909B000D9EBD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCAED7870B21190BB2126FE8 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -291,6 +293,7 @@
 				5F98917F2328D4F800D9EBD6 /* GradientColors.swift */,
 				5F9891812328D69C00D9EBD6 /* GradientView.swift */,
 				5F9891882328E68E00D9EBD6 /* Loader.swift */,
+				5F98918A232909B000D9EBD6 /* Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				5F0B25E92327C29F005B9BA3 /* SearchScreenViewController.swift in Sources */,
 				5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */,
 				5F0B25F12327C2DB005B9BA3 /* SettingsScreenViewModel.swift in Sources */,
+				5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */,
 				5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */,
 				5F0B25E62327C288005B9BA3 /* MainScreenCoordinator.swift in Sources */,
 				5F0B25D62327C1E0005B9BA3 /* RealmManager.swift in Sources */,
