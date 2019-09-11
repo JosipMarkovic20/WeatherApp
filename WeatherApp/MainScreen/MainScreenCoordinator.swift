@@ -13,9 +13,14 @@ import UIKit
 class MainScreenCoordinator: Coordinator{
     
     var childCoordinators: [Coordinator] = []
-    let viewController = MainScreenViewController()
+    let viewModel: MainScreenViewModel
+    let viewController: MainScreenViewController
     
 
+    init(){
+        viewModel = MainScreenViewModel(weatherRepository: WeatherRepository())
+        viewController = MainScreenViewController(viewModel: viewModel)
+    }
     
     func start() {
     }

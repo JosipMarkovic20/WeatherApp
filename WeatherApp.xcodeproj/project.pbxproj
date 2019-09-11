@@ -33,6 +33,9 @@
 		5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3E68F92327BB8600E727DE /* AppDelegate.swift */; };
 		5F3E69012327BB8600E727DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69002327BB8600E727DE /* Assets.xcassets */; };
 		5F3E69042327BB8600E727DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69022327BB8600E727DE /* LaunchScreen.storyboard */; };
+		5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */; };
+		5F9891802328D4F800D9EBD6 /* GradientColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98917F2328D4F800D9EBD6 /* GradientColors.swift */; };
+		5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891812328D69C00D9EBD6 /* GradientView.swift */; };
 		754ED5F073197F7EABEAFA69 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */; };
 		E93AAFA82CA3798BA28216EC /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */; };
 /* End PBXBuildFile section */
@@ -80,6 +83,9 @@
 		5F3E69052327BB8600E727DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F3E690A2327BB8600E727DE /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F3E69102327BB8700E727DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSetupEnum.swift; sourceTree = "<group>"; };
+		5F98917F2328D4F800D9EBD6 /* GradientColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientColors.swift; sourceTree = "<group>"; };
+		5F9891812328D69C00D9EBD6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCAED7870B21190BB2126FE8 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +203,7 @@
 		5F0B25CB2327C0F3005B9BA3 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -241,6 +248,7 @@
 		5F3E68F82327BB8600E727DE /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				5F98917E2328D4E200D9EBD6 /* Helpers */,
 				5F0B25CC2327C0FB005B9BA3 /* Delegates */,
 				5F0B25CB2327C0F3005B9BA3 /* Enums */,
 				5F0B25CA2327C0EF005B9BA3 /* Coordinator */,
@@ -268,6 +276,15 @@
 				5F0B25BC2327C082005B9BA3 /* WeatherAppTests-Bridging-Header.h */,
 			);
 			path = WeatherAppTests;
+			sourceTree = "<group>";
+		};
+		5F98917E2328D4E200D9EBD6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5F98917F2328D4F800D9EBD6 /* GradientColors.swift */,
+				5F9891812328D69C00D9EBD6 /* GradientView.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -481,12 +498,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F0B25F32327C2ED005B9BA3 /* SettingsScreenCoordinator.swift in Sources */,
+				5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
 				5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */,
 				5F0B25ED2327C2BC005B9BA3 /* SearchScreenCoordinator.swift in Sources */,
 				5F0B25D42327C1D1005B9BA3 /* PlaceSearchData.swift in Sources */,
 				5F0B25EB2327C2AB005B9BA3 /* SearchScreenViewModel.swift in Sources */,
 				5F0B25D02327C1AA005B9BA3 /* AppCoordinator.swift in Sources */,
+				5F9891802328D4F800D9EBD6 /* GradientColors.swift in Sources */,
 				5F0B25CE2327C19F005B9BA3 /* Coordinator.swift in Sources */,
 				5F0B25E42327C279005B9BA3 /* MainScreenViewModel.swift in Sources */,
 				5F0B25DB2327C21F005B9BA3 /* AlamofireManager.swift in Sources */,
@@ -497,6 +516,7 @@
 				5F0B25E92327C29F005B9BA3 /* SearchScreenViewController.swift in Sources */,
 				5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */,
 				5F0B25F12327C2DB005B9BA3 /* SettingsScreenViewModel.swift in Sources */,
+				5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */,
 				5F0B25E62327C288005B9BA3 /* MainScreenCoordinator.swift in Sources */,
 				5F0B25D62327C1E0005B9BA3 /* RealmManager.swift in Sources */,
 				5F0B25F52327C48A005B9BA3 /* CoordinatorDelegates.swift in Sources */,
