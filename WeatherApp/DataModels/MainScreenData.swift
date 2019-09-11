@@ -10,8 +10,8 @@ import Foundation
 
 
 struct Weather: Decodable{
-    let currently: [Currently]
-    let daily: [Daily]
+    let currently: Currently
+    let daily: Daily
 }
 
 struct Currently: Decodable{
@@ -26,6 +26,10 @@ struct Currently: Decodable{
 
 
 struct Daily: Decodable{
+    let data: [DailyData]
+}
+
+struct DailyData: Decodable{
     let temperatureMin: Double
     let temperatureMax: Double
     let time: Int
