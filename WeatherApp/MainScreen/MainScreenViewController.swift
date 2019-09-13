@@ -102,6 +102,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "settings_icon"), for: .normal)
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         return button
     }()
     
@@ -207,6 +208,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     let gradientColors = GradientColors()
     let loader = LoaderViewController()
     var openSearchScreen: () -> Void = {}
+    var openSettingsScreen: () -> Void = {}
     var placeCoordinates: [Double] = [18.6938889,45.5511111]
     
     init(viewModel: MainScreenViewModel){
@@ -287,6 +289,10 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         return false
     }
     
+    @objc func openSettings(){
+        self.openSettingsScreen()
+    }
+    
     func setupSubscriptions(){
         viewModel.setupScreenSubject
             .observeOn(MainScheduler.instance)
@@ -337,7 +343,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true    
+        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         placeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         

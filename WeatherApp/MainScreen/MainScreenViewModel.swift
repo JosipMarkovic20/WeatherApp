@@ -98,10 +98,10 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     func convertUnixTimeToDate(unixTime: Int) -> String{
         let date = Date(timeIntervalSince1970: Double(unixTime))
         let dateFormatter = DateFormatter()
-        let timezone = TimeZone.current.abbreviation() ?? "CET"  // get current TimeZone abbreviation or set to CET
-        dateFormatter.timeZone = TimeZone(abbreviation: timezone) //Set timezone that you want
+        let timezone = TimeZone.current.abbreviation() ?? "CET"
+        dateFormatter.timeZone = TimeZone(abbreviation: timezone)
         dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "dd.MM.yyyy" //Specify your format that you want
+        dateFormatter.dateFormat = "dd.MM.yyyy"
         let strDate = dateFormatter.string(from: date)
         return strDate
     }

@@ -7,3 +7,16 @@
 //
 
 import Foundation
+import RxSwift
+
+
+class SettingsScreenViewModel{
+    
+    let subscribeScheduler: SchedulerType
+
+    
+    init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
+        self.subscribeScheduler = subscribeScheduler
+    }
+    
+}

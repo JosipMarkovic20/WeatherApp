@@ -24,6 +24,7 @@ class MainScreenCoordinator: Coordinator{
     
     func start() {
         setupSearchOpening()
+        setupSettingsOpening()
     }
     
     func setupSearchOpening(){
@@ -32,6 +33,15 @@ class MainScreenCoordinator: Coordinator{
             self.store(coordinator: coordinator)
             coordinator.viewController.coordinatorDelegate = self
             coordinator.viewController.loadPlaceDelegate = self
+            coordinator.start()
+        }
+    }
+    
+    func setupSettingsOpening(){
+        self.viewController.openSettingsScreen = {[unowned self] in
+            let coordinator = SettingsScreenCoordinator(mainViewController: self.viewController)
+            self.store(coordinator: coordinator)
+            coordinator.viewController.coordinatorDelegate = self
             coordinator.start()
         }
     }
