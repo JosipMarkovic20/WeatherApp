@@ -58,12 +58,17 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     
     override func viewDidLoad() {
         setupUI()
-        setupCollectionView()
+        setupSubscription()
+        toDispose()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         setupSearchBar()
         searchBar.becomeFirstResponder()
+    }
+    
+    func toDispose(){
+        viewModel.collectAndPrepareData(for: viewModel.getPlaceDataSubject).disposed(by: disposeBag)
     }
     
     func setupCollectionView(){
@@ -77,11 +82,9 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         collectionView.dataSource = self
         collectionView.register(SearchScreenCollectionCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
-        view.addSubview(collectionView)
-        setupConstraints()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -102,17 +105,17 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     }
     
     func setupUI(){
+        setupCollectionView()
         view.backgroundColor = .clear
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(blurEffectView)
+        view.addSubview(collectionView)
         view.addSubview(closeButton)
         view.addSubview(searchBar)
-        
-        setupConstraints()
-        
+        setupConstraints() 
         bottomConstraint = NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10)
         view.addConstraint(bottomConstraint!)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
