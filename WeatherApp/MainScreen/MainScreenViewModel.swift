@@ -27,9 +27,9 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     }
     
     
-    func collectAndPrepareData(for subject: PublishSubject<[Double]>) -> Disposable{
-        self.loaderSubject.onNext(true)
+    func collectAndPrepareData(for subject: PublishSubject<[Double]>) -> Disposable{     
         return subject.flatMap({[unowned self] (locationArray) -> Observable<Weather> in
+            self.loaderSubject.onNext(true)
             return self.weatherRepository.getWeather(lng: locationArray[0], lat: locationArray[1])
         })
             .observeOn(MainScheduler.instance)

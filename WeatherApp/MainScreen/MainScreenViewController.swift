@@ -88,9 +88,12 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         return minAndMaxView
     }()
     
-    let statsView: UIView = {
-        let statsView = UIView()
+    lazy var statsView: UIStackView = {
+        let statsView = UIStackView(arrangedSubviews: [humidityView, windView, pressureView])
         statsView.translatesAutoresizingMaskIntoConstraints = false
+        statsView.axis = .horizontal
+        statsView.spacing = 20
+        statsView.distribution = .fillEqually
         return statsView
     }()
     
@@ -177,6 +180,27 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         return pressureLabel
     }()
     
+    let humidityView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
+    let windView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
+    let pressureView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
@@ -242,12 +266,12 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         minAndMaxTemp.addSubview(maxTempLabel)
         minAndMaxTemp.addSubview(maxLabel)
         minAndMaxTemp.addSubview(divider)
-        statsView.addSubview(humidityLabel)
-        statsView.addSubview(humidity)
-        statsView.addSubview(windLabel)
-        statsView.addSubview(wind)
-        statsView.addSubview(pressureLabel)
-        statsView.addSubview(pressure)
+        humidityView.addSubview(humidityLabel)
+        humidityView.addSubview(humidity)
+        windView.addSubview(windLabel)
+        windView.addSubview(wind)
+        pressureView.addSubview(pressureLabel)
+        pressureView.addSubview(pressure)
         
         setupConstraints()
         
@@ -412,32 +436,23 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     
     func setupStats(){
         
-        wind.topAnchor.constraint(equalTo: statsView.topAnchor).isActive = true
-        wind.centerXAnchor.constraint(equalTo: statsView.centerXAnchor).isActive = true
-        wind.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        wind.widthAnchor.constraint(equalToConstant: 55).isActive = true
+        wind.topAnchor.constraint(equalTo: windView.topAnchor).isActive = true
+        wind.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
         
-        windLabel.topAnchor.constraint(equalTo: wind.bottomAnchor, constant: 10).isActive = true
-        windLabel.centerXAnchor.constraint(equalTo: statsView.centerXAnchor).isActive = true
-        windLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        windLabel.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
+        windLabel.bottomAnchor.constraint(equalTo: windView.bottomAnchor).isActive = true
         
-        humidity.topAnchor.constraint(equalTo: statsView.topAnchor).isActive = true
-        humidity.leadingAnchor.constraint(equalTo: statsView.leadingAnchor, constant: 40).isActive = true
-        humidity.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        humidity.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        humidity.topAnchor.constraint(equalTo: humidityView.topAnchor).isActive = true
+        humidity.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
         
-        humidityLabel.topAnchor.constraint(equalTo: humidity.bottomAnchor, constant: 10).isActive = true
-        humidityLabel.leadingAnchor.constraint(equalTo: statsView.leadingAnchor, constant: 30).isActive = true
-        humidityLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        humidityLabel.bottomAnchor.constraint(equalTo: humidityView.bottomAnchor).isActive = true
+        humidityLabel.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
         
-        pressure.topAnchor.constraint(equalTo: statsView.topAnchor).isActive = true
-        pressure.trailingAnchor.constraint(equalTo: statsView.trailingAnchor, constant: -55).isActive = true
-        pressure.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        pressure.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        pressureLabel.topAnchor.constraint(equalTo: pressure.bottomAnchor, constant: 10).isActive = true
-        pressureLabel.trailingAnchor.constraint(equalTo: statsView.trailingAnchor, constant: -30).isActive = true
-        pressureLabel.widthAnchor.constraint(equalToConstant: 91).isActive = true
+        pressure.topAnchor.constraint(equalTo: pressureView.topAnchor).isActive = true
+        pressure.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
+
+        pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
+        pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
         
         let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0
         humidityLabel.text = "\(humidityText.rounded(toPlaces: 1))%"
@@ -480,7 +495,5 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
                     self.loader.removeFromParent()
                 }
             }.disposed(by: disposeBag)
-    }
-    
-    
+    } 
 }
