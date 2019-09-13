@@ -336,11 +336,9 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         
         temperatureLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height * 0.15).isActive = true
         temperatureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        temperatureLabel.heightAnchor.constraint(equalToConstant: 72).isActive = true
         
         summaryLabel.topAnchor.constraint(equalTo: temperatureLabel.bottomAnchor).isActive = true
         summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
@@ -447,22 +445,18 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         minTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
         minTempLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
         minTempLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
-        minTempLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         minLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
         minLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
         minLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
-        minLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         maxTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
         maxTempLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
         maxTempLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
-        maxTempLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         maxLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
         maxLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
         maxLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
-        maxLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         let temperatures = viewModel.findMinAndMaxTemperatures()
         

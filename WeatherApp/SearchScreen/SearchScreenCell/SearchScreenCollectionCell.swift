@@ -16,7 +16,7 @@ class SearchScreenCollectionCell: UICollectionViewCell{
     let squareView: UIView = {
         let squareView = UIView()
         squareView.translatesAutoresizingMaskIntoConstraints = false
-        squareView.backgroundColor = UIColor(hex: "#577682")
+        squareView.backgroundColor = UIColor(hex: "#497183")
         return squareView
     }()
     

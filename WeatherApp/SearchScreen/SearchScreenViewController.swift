@@ -19,7 +19,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         let tintedImage = image?.withRenderingMode(.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
-        button.tintColor = UIColor(hex: "#577682")
+        button.tintColor = UIColor(hex: "#497183")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
