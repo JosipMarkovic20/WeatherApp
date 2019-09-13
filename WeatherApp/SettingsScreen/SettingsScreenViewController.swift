@@ -48,7 +48,10 @@ class SettingsScreenViewController: UIViewController{
         setupUI()
     }
     
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        coordinatorDelegate?.viewControllerHasFinished()
+    }
     
     func setupUI(){
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.regular)
