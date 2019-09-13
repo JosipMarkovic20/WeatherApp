@@ -79,6 +79,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         label.text = "Osijek"
         label.textColor = .white
         label.textAlignment = .center
+        label.numberOfLines = 3
         return label
     }()
     
@@ -274,8 +275,43 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         pressureView.addSubview(pressure)
         
         setupConstraints()
-        
         searchBar.delegate = self
+    }
+    
+    func getData(){
+        viewModel.getWeatherDataSubject.onNext(placeCoordinates)
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        openSearchScreen()
+        return false
+    }
+    
+    func setupSubscriptions(){
+        viewModel.setupScreenSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe {[unowned self] (enumCase) in
+                guard let enumCase = enumCase.element else { return }
+                self.setupScreen(enumCase: enumCase)
+            }.disposed(by: disposeBag)
+        
+        
+        viewModel.loaderSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe {[unowned self] (bool) in
+                if bool.element ?? false{
+                    self.addChild(self.loader)
+                    self.loader.view.frame = self.view.frame
+                    self.view.addSubview(self.loader.view)
+                    self.loader.didMove(toParent: self)
+                }else{
+                    self.loader.willMove(toParent: nil)
+                    self.loader.view.removeFromSuperview()
+                    self.loader.removeFromParent()
+                }
+            }.disposed(by: disposeBag)
     }
     
     func setupConstraints(){
@@ -283,16 +319,14 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         bodyImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         bodyImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        
         headerImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         headerImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         headerImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
+    
         backgroundGradient.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         backgroundGradient.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         backgroundGradient.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         backgroundGradient.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
         
         temperatureLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 10).isActive = true
         temperatureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -303,8 +337,8 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 5).isActive = true
-        placeLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         
         minAndMaxTemp.topAnchor.constraint(equalToSystemSpacingBelow: placeLabel.bottomAnchor, multiplier: 5).isActive = true
         minAndMaxTemp.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -326,12 +360,8 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
     }
     
-    func getData(){
-        viewModel.getWeatherDataSubject.onNext(placeCoordinates)
-    }
     
     func setupScreen(enumCase: LayoutSetupEnum){
-        
         let dayGradient = [gradientColors.dayColorTop, gradientColors.dayColorBottom].gradient()
         let nightGradient = [gradientColors.nightColorTop, gradientColors.nightColorBottom].gradient()
         let rainGradient = [gradientColors.rainColorTop, gradientColors.rainColorBottom].gradient()
@@ -402,7 +432,6 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func setupMinAndMax(){
-    
         divider.heightAnchor.constraint(equalToConstant: 60).isActive = true
         divider.centerXAnchor.constraint(equalTo: minAndMaxTemp.centerXAnchor).isActive = true
         divider.centerYAnchor.constraint(equalTo: minAndMaxTemp.centerYAnchor).isActive = true
@@ -435,7 +464,6 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func setupStats(){
-        
         wind.topAnchor.constraint(equalTo: windView.topAnchor).isActive = true
         wind.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
         
@@ -454,8 +482,8 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
         pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
         
-        let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0
-        humidityLabel.text = "\(humidityText.rounded(toPlaces: 1))%"
+        let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0 * 100
+        humidityLabel.text = "\(humidityText.rounded(toPlaces: 1) * 100)%"
         
         let windText = viewModel.weatherResponse?.currently.windSpeed ?? 0
         windLabel.text = "\(windText.rounded(toPlaces: 1)) km/h"
@@ -463,37 +491,4 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         let pressureText = Int(viewModel.weatherResponse?.currently.pressure ?? 0)
         pressureLabel.text = "\(pressureText) hpa"
     }
-    
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        openSearchScreen()
-        return false
-    }
-    
-    func setupSubscriptions(){
-        
-        viewModel.setupScreenSubject
-            .observeOn(MainScheduler.instance)
-            .subscribeOn(viewModel.subscribeScheduler)
-            .subscribe {[unowned self] (enumCase) in
-                guard let enumCase = enumCase.element else { return }
-                self.setupScreen(enumCase: enumCase)
-            }.disposed(by: disposeBag)
-        
-        
-        viewModel.loaderSubject
-            .observeOn(MainScheduler.instance)
-            .subscribeOn(viewModel.subscribeScheduler)
-            .subscribe {[unowned self] (bool) in
-                if bool.element ?? false{
-                    self.addChild(self.loader)
-                    self.loader.view.frame = self.view.frame
-                    self.view.addSubview(self.loader.view)
-                    self.loader.didMove(toParent: self)
-                }else{
-                    self.loader.willMove(toParent: nil)
-                    self.loader.view.removeFromSuperview()
-                    self.loader.removeFromParent()
-                }
-            }.disposed(by: disposeBag)
-    } 
 }

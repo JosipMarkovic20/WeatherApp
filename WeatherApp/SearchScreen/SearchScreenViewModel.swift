@@ -18,12 +18,10 @@ class SearchScreenViewModel: SearchScreenProtocol{
     let subscribeScheduler: SchedulerType
     let tableReloadSubject = PublishSubject<Bool>()
     
-    
     init(placeRepository: PlaceNameRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
         self.placeRepository = placeRepository
         self.subscribeScheduler = subscribeScheduler
     }
-    
     
     func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable {
         return subject.flatMap({ (query) -> Observable<PlaceData> in
@@ -36,7 +34,6 @@ class SearchScreenViewModel: SearchScreenProtocol{
                 self.placeResponse = places
                 self.tableReloadSubject.onNext(true)
             })
-        
     }
 
 }
@@ -46,7 +43,6 @@ protocol SearchScreenProtocol {
     
     var placeResponse: [Place] {get set}
     var getPlaceDataSubject: PublishSubject<String> {get set}
-    
     
     func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable
 }

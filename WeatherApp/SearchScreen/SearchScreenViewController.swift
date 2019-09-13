@@ -15,8 +15,11 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     
     let closeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "close"), for: .normal)
+        let image = UIImage(named: "close")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
         button.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
+        button.tintColor = UIColor(hex: "#577682")
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -50,14 +53,6 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         print("deinit: \(self)")
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        if isMovingFromParent{
-            coordinatorDelegate?.viewControllerHasFinished()
-        }
-    }
-    
-    
     override func viewDidLoad() {
         setupUI()
         setupSubscription()
@@ -69,44 +64,15 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         searchBar.becomeFirstResponder()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        coordinatorDelegate?.viewControllerHasFinished()
+    }
+    
     func toDispose(){
         viewModel.collectAndPrepareData(for: viewModel.getPlaceDataSubject).disposed(by: disposeBag)
     }
-    
-    func setupCollectionView(){
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = UICollectionView.ScrollDirection.vertical
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 43)
-        layout.minimumLineSpacing = 0
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(SearchScreenCollectionCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .clear
-        collectionView.isPagingEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.placeResponse.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = viewModel.placeResponse[indexPath.row]
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? SearchScreenCollectionCell  else {
-            fatalError("The dequeued cell is not an instance of CollectionViewCell.")
-        }
-        cell.configureCell(item: item)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        loadPlaceDelegate?.loadPlace(place: viewModel.placeResponse[indexPath.row])
-        dismissViewController()
-    }
-    
+
     func setupUI(){
         setupCollectionView()
         view.backgroundColor = .clear
@@ -127,6 +93,21 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    
+    func setupConstraints(){
+        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        closeButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        closeButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    }
+    
     @objc func handleKeyboard(notification: NSNotification){
         
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
@@ -140,22 +121,59 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
                 
             }
         }
-        
     }
     
-    func setupConstraints(){
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        closeButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        closeButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+    func setupSearchBar(){
+        let searchTextField:UITextField = searchBar.subviews[0].subviews.last as! UITextField
+        searchTextField.textAlignment = NSTextAlignment.left
+        let image:UIImage = UIImage(named: "search_icon")!
+        let imageView:UIImageView = UIImageView.init(image: image)
+        imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = UIColor(hex: "#6DA133")
+        searchTextField.leftView = nil
+        searchTextField.placeholder = "Search"
+        searchTextField.rightView = imageView
+        searchTextField.rightViewMode = UITextField.ViewMode.always
         
+        if let backgroundview = searchTextField.subviews.first {
+            backgroundview.layer.cornerRadius = 18;
+            backgroundview.clipsToBounds = true;
+        }
+    }
+    
+    func setupCollectionView(){
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionView.ScrollDirection.vertical
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 43)
+        layout.minimumLineSpacing = 0
         
-        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SearchScreenCollectionCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.placeResponse.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item = viewModel.placeResponse[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? SearchScreenCollectionCell  else {
+            fatalError("The dequeued cell is not an instance of CollectionViewCell.")
+        }
+        cell.configureCell(item: item)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        loadPlaceDelegate?.loadPlace(place: viewModel.placeResponse[indexPath.row])
+        dismissViewController()
     }
     
     @objc func dismissViewController(){
@@ -184,23 +202,4 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
                 self.collectionView.reloadData()
             }).disposed(by: disposeBag)
     }
-    
-    func setupSearchBar(){
-        let searchTextField:UITextField = searchBar.subviews[0].subviews.last as! UITextField
-        searchTextField.textAlignment = NSTextAlignment.left
-        let image:UIImage = UIImage(named: "search_icon")!
-        let imageView:UIImageView = UIImageView.init(image: image)
-        imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = UIColor(hex: "#6DA133")
-        searchTextField.leftView = nil
-        searchTextField.placeholder = "Search"
-        searchTextField.rightView = imageView
-        searchTextField.rightViewMode = UITextField.ViewMode.always
-        
-        if let backgroundview = searchTextField.subviews.first {
-            backgroundview.layer.cornerRadius = 18;
-            backgroundview.clipsToBounds = true;
-        }
-    }
-    
 }

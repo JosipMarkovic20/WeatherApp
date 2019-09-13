@@ -23,10 +23,10 @@ class MainScreenCoordinator: Coordinator{
     }
     
     func start() {
-        openSearch()
+        setupSearchOpening()
     }
     
-    func openSearch(){
+    func setupSearchOpening(){
         self.viewController.openSearchScreen = {[unowned self] in
             let coordinator = SearchScreenCoordinator(mainViewController: self.viewController)
             self.store(coordinator: coordinator)

@@ -24,6 +24,10 @@ class SearchScreenCoordinator: Coordinator{
         self.viewController = SearchScreenViewController(viewModel: viewModel)
         self.mainViewController = mainViewController
     }
+    
+    deinit {
+        print("deinit: \(self)")
+    }
 
 
     func start() {
