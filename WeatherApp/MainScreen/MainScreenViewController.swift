@@ -328,7 +328,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         backgroundGradient.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         backgroundGradient.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        temperatureLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 10).isActive = true
+        temperatureLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height * 0.15).isActive = true
         temperatureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         temperatureLabel.heightAnchor.constraint(equalToConstant: 72).isActive = true
         
@@ -336,16 +336,17 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
-        placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 5).isActive = true
         placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true    
+        placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        placeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        minAndMaxTemp.topAnchor.constraint(equalToSystemSpacingBelow: placeLabel.bottomAnchor, multiplier: 5).isActive = true
+        minAndMaxTemp.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: UIScreen.main.bounds.height * 0.05).isActive = true
         minAndMaxTemp.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         minAndMaxTemp.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         minAndMaxTemp.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        statsView.topAnchor.constraint(equalToSystemSpacingBelow: minAndMaxTemp.bottomAnchor, multiplier: 5).isActive = true
+        statsView.topAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: UIScreen.main.bounds.height * 0.05).isActive = true
         statsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         statsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         statsView.heightAnchor.constraint(equalToConstant: 80).isActive = true
