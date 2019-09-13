@@ -32,8 +32,10 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     let viewModel: SearchScreenViewModel
     weak var coordinatorDelegate: CoordinatorDelegate?
     var bottomConstraint: NSLayoutConstraint?
+    var collectionViewBottomConstraint: NSLayoutConstraint?
     var collectionView: UICollectionView!
     let disposeBag = DisposeBag()
+    weak var loadPlaceDelegate: LoadPlaceDataDelegate?
     
     init(viewModel: SearchScreenViewModel){
         self.viewModel = viewModel
@@ -74,7 +76,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionView.ScrollDirection.vertical
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 104)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 43)
         layout.minimumLineSpacing = 0
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -101,7 +103,8 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        loadPlaceDelegate?.loadPlace(place: viewModel.placeResponse[indexPath.row])
+        dismissViewController()
     }
     
     func setupUI(){
@@ -115,9 +118,11 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         view.addSubview(collectionView)
         view.addSubview(closeButton)
         view.addSubview(searchBar)
-        setupConstraints() 
+        setupConstraints()
         bottomConstraint = NSLayoutConstraint(item: searchBar, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10)
+        collectionViewBottomConstraint = NSLayoutConstraint(item: collectionView!, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -40)
         view.addConstraint(bottomConstraint!)
+        view.addConstraint(collectionViewBottomConstraint!)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -128,7 +133,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
             let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
             let keyboardHeight = keyboardFrame.cgRectValue.height
             bottomConstraint?.constant = isKeyboardShowing ? -keyboardHeight : -10
-            
+            collectionViewBottomConstraint?.constant = isKeyboardShowing ? -keyboardHeight - 60 : -60
             UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }) { (completed) in
@@ -151,7 +156,6 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     @objc func dismissViewController(){

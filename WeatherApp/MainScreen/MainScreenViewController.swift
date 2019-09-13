@@ -109,11 +109,80 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         return searchBar
     }()
     
+    let minTempLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont(name: "GothamRounded-Light", size: 24)
+        label.textAlignment = .center
+        return label
+    }()
+    let minLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Min"
+        label.textColor = .white
+        label.font = UIFont(name: "GothamRounded-Light", size: 20)
+        label.textAlignment = .center
+        return label
+    }()
+    let maxTempLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont(name: "GothamRounded-Light", size: 24)
+        label.textAlignment = .center
+        return label
+    }()
+    let maxLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Max"
+        label.textColor = .white
+        label.font = UIFont(name: "GothamRounded-Light", size: 20)
+        label.textAlignment = .center
+        return label
+    }()
+    let divider: UIView = {
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = .white
+        return divider
+    }()
+    
+    let humidityLabel: UILabel = {
+        let humidityLabel = UILabel()
+        humidityLabel.translatesAutoresizingMaskIntoConstraints = false
+        humidityLabel.textAlignment = .center
+        humidityLabel.textColor = .white
+        humidityLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        return humidityLabel
+    }()
+    
+    let windLabel: UILabel = {
+        let windLabel = UILabel()
+        windLabel.translatesAutoresizingMaskIntoConstraints = false
+        windLabel.textAlignment = .center
+        windLabel.textColor = .white
+        windLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        return windLabel
+    }()
+    
+    let pressureLabel: UILabel = {
+        let pressureLabel = UILabel()
+        pressureLabel.translatesAutoresizingMaskIntoConstraints = false
+        pressureLabel.textAlignment = .center
+        pressureLabel.textColor = .white
+        pressureLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        return pressureLabel
+    }()
+    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
     let loader = LoaderViewController()
     var openSearchScreen: () -> Void = {}
+    var placeCoordinates: [Double] = [18.6938889,45.5511111]
     
     init(viewModel: MainScreenViewModel){
         self.viewModel = viewModel
@@ -168,6 +237,17 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         self.view.addSubview(statsView)
         self.view.addSubview(settingsButton)
         self.view.addSubview(searchBar)
+        minAndMaxTemp.addSubview(minTempLabel)
+        minAndMaxTemp.addSubview(minLabel)
+        minAndMaxTemp.addSubview(maxTempLabel)
+        minAndMaxTemp.addSubview(maxLabel)
+        minAndMaxTemp.addSubview(divider)
+        statsView.addSubview(humidityLabel)
+        statsView.addSubview(humidity)
+        statsView.addSubview(windLabel)
+        statsView.addSubview(wind)
+        statsView.addSubview(pressureLabel)
+        statsView.addSubview(pressure)
         
         setupConstraints()
         
@@ -223,7 +303,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func getData(){
-        viewModel.getWeatherDataSubject.onNext([18.6938889,45.5511111])
+        viewModel.getWeatherDataSubject.onNext(placeCoordinates)
     }
     
     func setupScreen(enumCase: LayoutSetupEnum){
@@ -298,25 +378,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func setupMinAndMax(){
-        let minTempLabel = UILabel()
-        let minLabel = UILabel()
-        let maxTempLabel = UILabel()
-        let maxLabel = UILabel()
-        let divider = UIView()
-        divider.backgroundColor = .white
-        
-        minTempLabel.translatesAutoresizingMaskIntoConstraints = false
-        minLabel.translatesAutoresizingMaskIntoConstraints = false
-        maxTempLabel.translatesAutoresizingMaskIntoConstraints = false
-        maxLabel.translatesAutoresizingMaskIntoConstraints = false
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        
-        minAndMaxTemp.addSubview(minTempLabel)
-        minAndMaxTemp.addSubview(minLabel)
-        minAndMaxTemp.addSubview(maxTempLabel)
-        minAndMaxTemp.addSubview(maxLabel)
-        minAndMaxTemp.addSubview(divider)
-        
+    
         divider.heightAnchor.constraint(equalToConstant: 60).isActive = true
         divider.centerXAnchor.constraint(equalTo: minAndMaxTemp.centerXAnchor).isActive = true
         divider.centerYAnchor.constraint(equalTo: minAndMaxTemp.centerYAnchor).isActive = true
@@ -342,55 +404,13 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         maxLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
         maxLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        minLabel.text = "Min"
-        minLabel.textColor = .white
-        minLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
-        minLabel.textAlignment = .center
-        
-        maxLabel.text = "Max"
-        maxLabel.textColor = .white
-        maxLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
-        maxLabel.textAlignment = .center
-        
         let temperatures = viewModel.findMinAndMaxTemperatures()
         
         minTempLabel.text = "\(temperatures.min.rounded(toPlaces: 1))˚C"
-        minTempLabel.textColor = .white
-        minTempLabel.font = UIFont(name: "GothamRounded-Light", size: 24)
-        minTempLabel.textAlignment = .center
-        
         maxTempLabel.text = "\(temperatures.max.rounded(toPlaces: 1))˚C"
-        maxTempLabel.textColor = .white
-        maxTempLabel.font = UIFont(name: "GothamRounded-Light", size: 24)
-        maxTempLabel.textAlignment = .center
-        
     }
     
     func setupStats(){
-        let humidityLabel = UILabel()
-        humidityLabel.translatesAutoresizingMaskIntoConstraints = false
-        humidityLabel.textAlignment = .center
-        humidityLabel.textColor = .white
-        humidityLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
-        
-        let windLabel = UILabel()
-        windLabel.translatesAutoresizingMaskIntoConstraints = false
-        windLabel.textAlignment = .center
-        windLabel.textColor = .white
-        windLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
-        
-        let pressureLabel = UILabel()
-        pressureLabel.translatesAutoresizingMaskIntoConstraints = false
-        pressureLabel.textAlignment = .center
-        pressureLabel.textColor = .white
-        pressureLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
-        
-        statsView.addSubview(humidityLabel)
-        statsView.addSubview(humidity)
-        statsView.addSubview(windLabel)
-        statsView.addSubview(wind)
-        statsView.addSubview(pressureLabel)
-        statsView.addSubview(pressure)
         
         wind.topAnchor.constraint(equalTo: statsView.topAnchor).isActive = true
         wind.centerXAnchor.constraint(equalTo: statsView.centerXAnchor).isActive = true

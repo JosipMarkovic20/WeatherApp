@@ -31,6 +31,7 @@ class MainScreenCoordinator: Coordinator{
             let coordinator = SearchScreenCoordinator(mainViewController: self.viewController)
             self.store(coordinator: coordinator)
             coordinator.viewController.coordinatorDelegate = self
+            coordinator.viewController.loadPlaceDelegate = self
             coordinator.start()
         }
     }
@@ -38,8 +39,14 @@ class MainScreenCoordinator: Coordinator{
 }
 
 
-extension MainScreenCoordinator: ParentCoordinatorDelegate, CoordinatorDelegate{
+extension MainScreenCoordinator: ParentCoordinatorDelegate, CoordinatorDelegate, LoadPlaceDataDelegate{
     
+    
+    func loadPlace(place: Place) {
+        viewController.placeCoordinates = [place.lng, place.lat]
+        viewController.getData()
+        viewController.placeLabel.text = place.placeName
+    }
     
     func childHasFinished(coordinator: Coordinator) {
         free(coordinator: coordinator)

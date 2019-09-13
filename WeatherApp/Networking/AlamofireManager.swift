@@ -37,9 +37,9 @@ class AlamofireManager{
     
     
     func getPlaceAlamofireWay(jsonUrlString: String) -> Observable<PlaceData>{
-        
+        let encodedString = jsonUrlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? ""
         return Observable.create{observer in
-            Alamofire.request(jsonUrlString)
+            Alamofire.request(encodedString)
                 .validate()
                 .responseJSON {[unowned self] response in
                     do{

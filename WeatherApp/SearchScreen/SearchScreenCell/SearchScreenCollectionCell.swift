@@ -8,11 +8,25 @@
 
 import Foundation
 import UIKit
-
+import Hue
 
 
 class SearchScreenCollectionCell: UICollectionViewCell{
     
+    let squareView: UIView = {
+        let squareView = UIView()
+        squareView.translatesAutoresizingMaskIntoConstraints = false
+        squareView.backgroundColor = UIColor(hex: "#577682")
+        return squareView
+    }()
+    
+    let letterLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "GothamRounded-Book", size: 24)
+        label.textColor = .white
+        return label
+    }()
     
     let placeName: UILabel = {
         let label = UILabel()
@@ -34,17 +48,27 @@ class SearchScreenCollectionCell: UICollectionViewCell{
     
     func setupUI(){
         contentView.addSubview(placeName)
+        contentView.addSubview(squareView)
+        squareView.addSubview(letterLabel)
         
         setupConstraints()
     }
     
     func setupConstraints(){
-        placeName.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        placeName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        placeName.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        squareView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
+        squareView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        squareView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        squareView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        letterLabel.centerXAnchor.constraint(equalTo: squareView.centerXAnchor).isActive = true
+        letterLabel.centerYAnchor.constraint(equalTo: squareView.centerYAnchor).isActive = true
+        
+        placeName.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        placeName.leadingAnchor.constraint(equalTo: squareView.trailingAnchor, constant: 10).isActive = true
     }
     
     func configureCell(item: Place){
         placeName.text = item.placeName
+        letterLabel.text = String(item.placeName.prefix(1))
     }
 }
