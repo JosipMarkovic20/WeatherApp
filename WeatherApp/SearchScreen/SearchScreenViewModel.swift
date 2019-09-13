@@ -10,10 +10,13 @@ import Foundation
 import RxSwift
 
 
-class SearchScreenViewModel{
+class SearchScreenViewModel: SearchScreenProtocol{
     
+    var placeResponse: [Place] = []
+    var getPlaceDataSubject = PublishSubject<String>()
     let placeRepository: PlaceNameRepository
     let subscribeScheduler: SchedulerType
+    let tableReloadSubject = PublishSubject<Bool>()
     
     
     init(placeRepository: PlaceNameRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
@@ -22,5 +25,28 @@ class SearchScreenViewModel{
     }
     
     
+    func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable {
+        return subject.flatMap({ (query) -> Observable<PlaceData> in
+            return self.placeRepository.getPlace(name: query)
+        })
+            .map({ (placeData) -> [Place] in
+                self.placeResponse.removeAll()
+                return placeData.postalCodes
+            }).subscribe(onNext: { (places) in
+                self.placeResponse = places
+                self.tableReloadSubject.onNext(true)
+            })
+        
+    }
+
+}
+
+
+protocol SearchScreenProtocol {
     
+    var placeResponse: [Place] {get set}
+    var getPlaceDataSubject: PublishSubject<String> {get set}
+    
+    
+    func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable
 }

@@ -40,6 +40,8 @@
 		5F9891872328DAFD00D9EBD6 /* Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891842328DAE800D9EBD6 /* Light.otf */; };
 		5F9891892328E68E00D9EBD6 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891882328E68E00D9EBD6 /* Loader.swift */; };
 		5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* Extensions.swift */; };
+		5FC2B0CF232B8A9A0045DDEE /* SearchScreenViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */; };
+		5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */; };
 		754ED5F073197F7EABEAFA69 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */; };
 		E93AAFA82CA3798BA28216EC /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */; };
 /* End PBXBuildFile section */
@@ -94,6 +96,8 @@
 		5F9891852328DAED00D9EBD6 /* Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Book.otf; sourceTree = "<group>"; };
 		5F9891882328E68E00D9EBD6 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		5F98918A232909B000D9EBD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenViewModelTests.swift; sourceTree = "<group>"; };
+		5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenCollectionCell.swift; sourceTree = "<group>"; };
 		B784851381E380BC68AA09F8 /* Pods_WeatherApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCAED7870B21190BB2126FE8 /* Pods-WeatherApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp/Pods-WeatherApp.release.xcconfig"; sourceTree = "<group>"; };
 		C8C626E46243DC4D126D69A9 /* Pods_WeatherAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +158,7 @@
 		5F0B25C52327C0E4005B9BA3 /* SearchScreen */ = {
 			isa = PBXGroup;
 			children = (
+				5FC2B0D0232B8F780045DDEE /* SearchScreenCell */,
 				5F0B25E82327C29F005B9BA3 /* SearchScreenViewController.swift */,
 				5F0B25EA2327C2AB005B9BA3 /* SearchScreenViewModel.swift */,
 				5F0B25EC2327C2BC005B9BA3 /* SearchScreenCoordinator.swift */,
@@ -281,6 +286,7 @@
 				5F0B25F82327CA00005B9BA3 /* PlacesSearchResponse.json */,
 				5F0B25FC2327CBA2005B9BA3 /* GeneratedMocks.swift */,
 				5F0B25BD2327C082005B9BA3 /* MainScreenViewModelTests.swift */,
+				5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */,
 				5F3E69102327BB8700E727DE /* Info.plist */,
 				5F0B25BC2327C082005B9BA3 /* WeatherAppTests-Bridging-Header.h */,
 			);
@@ -305,6 +311,14 @@
 				5F9891842328DAE800D9EBD6 /* Light.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		5FC2B0D0232B8F780045DDEE /* SearchScreenCell */ = {
+			isa = PBXGroup;
+			children = (
+				5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */,
+			);
+			path = SearchScreenCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -523,6 +537,7 @@
 				5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
 				5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */,
+				5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */,
 				5F0B25ED2327C2BC005B9BA3 /* SearchScreenCoordinator.swift in Sources */,
 				5F0B25D42327C1D1005B9BA3 /* PlaceSearchData.swift in Sources */,
 				5F0B25EB2327C2AB005B9BA3 /* SearchScreenViewModel.swift in Sources */,
@@ -551,6 +566,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FC2B0CF232B8A9A0045DDEE /* SearchScreenViewModelTests.swift in Sources */,
 				5F0B25BE2327C082005B9BA3 /* MainScreenViewModelTests.swift in Sources */,
 				5F0B25FD2327CBA2005B9BA3 /* GeneratedMocks.swift in Sources */,
 			);

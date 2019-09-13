@@ -8,10 +8,10 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
-
-
-class SearchScreenViewController: UIViewController, UISearchBarDelegate{
+class SearchScreenViewController: UIViewController, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
     
     let closeButton: UIButton = {
         let button = UIButton()
@@ -32,7 +32,8 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate{
     let viewModel: SearchScreenViewModel
     weak var coordinatorDelegate: CoordinatorDelegate?
     var bottomConstraint: NSLayoutConstraint?
-    
+    var collectionView: UICollectionView!
+    let disposeBag = DisposeBag()
     
     init(viewModel: SearchScreenViewModel){
         self.viewModel = viewModel
@@ -57,7 +58,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate{
     
     override func viewDidLoad() {
         setupUI()
-        
+        setupCollectionView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,6 +66,40 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate{
         searchBar.becomeFirstResponder()
     }
     
+    func setupCollectionView(){
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionView.ScrollDirection.vertical
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 104)
+        layout.minimumLineSpacing = 0
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SearchScreenCollectionCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        view.addSubview(collectionView)
+        setupConstraints()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.placeResponse.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item = viewModel.placeResponse[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? SearchScreenCollectionCell  else {
+            fatalError("The dequeued cell is not an instance of CollectionViewCell.")
+        }
+        cell.configureCell(item: item)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
     
     func setupUI(){
         view.backgroundColor = .clear
@@ -109,11 +144,38 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate{
         
         searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     @objc func dismissViewController(){
         searchBar.endEditing(true)
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func setupSubscription(){
+        @discardableResult let _ = searchBar.rx.text.orEmpty
+            .distinctUntilChanged()
+            .enumerated()
+            .skipWhile({ (index, value) -> Bool in
+                return index == 0
+            })
+            .map({ (index, value) -> String in
+                return value
+            })
+            .debounce(.milliseconds(300), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
+            .bind(to: viewModel.getPlaceDataSubject)
+        
+        
+        viewModel.tableReloadSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.collectionView.reloadData()
+            }).disposed(by: disposeBag)
     }
     
     func setupSearchBar(){

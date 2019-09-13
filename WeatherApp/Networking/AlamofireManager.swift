@@ -36,7 +36,7 @@ class AlamofireManager{
     }
     
     
-    func getPlaceAlamofireWay(jsonUrlString: String) -> Observable<Place>{
+    func getPlaceAlamofireWay(jsonUrlString: String) -> Observable<PlaceData>{
         
         return Observable.create{observer in
             Alamofire.request(jsonUrlString)
@@ -44,7 +44,7 @@ class AlamofireManager{
                 .responseJSON {[unowned self] response in
                     do{
                         guard let data = response.data else { return }
-                        let placeResponse = try self.jsonDecoder.decode(Place.self, from: data)
+                        let placeResponse = try self.jsonDecoder.decode(PlaceData.self, from: data)
                         observer.onNext(placeResponse)
                         observer.onCompleted()
                     } catch let jsonErr{

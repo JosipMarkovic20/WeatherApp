@@ -1,4 +1,4 @@
-// MARK: - Mocks generated from file: WeatherApp/Networking/PlaceNameRepository.swift at 2019-09-10 12:53:54 +0000
+// MARK: - Mocks generated from file: WeatherApp/Networking/PlaceNameRepository.swift at 2019-09-13 08:34:45 +0000
 
 //
 //  PlaceNameRepository.swift
@@ -40,9 +40,9 @@ import RxSwift
     
     
     
-     override func getPlace(name: String) -> Observable<Place> {
+     override func getPlace(name: String) -> Observable<PlaceData> {
         
-    return cuckoo_manager.call("getPlace(name: String) -> Observable<Place>",
+    return cuckoo_manager.call("getPlace(name: String) -> Observable<PlaceData>",
             parameters: (name),
             escapingParameters: (name),
             superclassCall:
@@ -62,9 +62,9 @@ import RxSwift
 	    }
 	    
 	    
-	    func getPlace<M1: Cuckoo.Matchable>(name: M1) -> Cuckoo.ClassStubFunction<(String), Observable<Place>> where M1.MatchedType == String {
+	    func getPlace<M1: Cuckoo.Matchable>(name: M1) -> Cuckoo.ClassStubFunction<(String), Observable<PlaceData>> where M1.MatchedType == String {
 	        let matchers: [Cuckoo.ParameterMatcher<(String)>] = [wrap(matchable: name) { $0 }]
-	        return .init(stub: cuckoo_manager.createStub(for: MockPlaceNameRepository.self, method: "getPlace(name: String) -> Observable<Place>", parameterMatchers: matchers))
+	        return .init(stub: cuckoo_manager.createStub(for: MockPlaceNameRepository.self, method: "getPlace(name: String) -> Observable<PlaceData>", parameterMatchers: matchers))
 	    }
 	    
 	}
@@ -84,9 +84,9 @@ import RxSwift
 	
 	    
 	    @discardableResult
-	    func getPlace<M1: Cuckoo.Matchable>(name: M1) -> Cuckoo.__DoNotUse<(String), Observable<Place>> where M1.MatchedType == String {
+	    func getPlace<M1: Cuckoo.Matchable>(name: M1) -> Cuckoo.__DoNotUse<(String), Observable<PlaceData>> where M1.MatchedType == String {
 	        let matchers: [Cuckoo.ParameterMatcher<(String)>] = [wrap(matchable: name) { $0 }]
-	        return cuckoo_manager.verify("getPlace(name: String) -> Observable<Place>", callMatcher: callMatcher, parameterMatchers: matchers, sourceLocation: sourceLocation)
+	        return cuckoo_manager.verify("getPlace(name: String) -> Observable<PlaceData>", callMatcher: callMatcher, parameterMatchers: matchers, sourceLocation: sourceLocation)
 	    }
 	    
 	}
@@ -98,14 +98,14 @@ import RxSwift
     
 
     
-     override func getPlace(name: String) -> Observable<Place>  {
-        return DefaultValueRegistry.defaultValue(for: (Observable<Place>).self)
+     override func getPlace(name: String) -> Observable<PlaceData>  {
+        return DefaultValueRegistry.defaultValue(for: (Observable<PlaceData>).self)
     }
     
 }
 
 
-// MARK: - Mocks generated from file: WeatherApp/Networking/WeatherRepository.swift at 2019-09-10 12:53:54 +0000
+// MARK: - Mocks generated from file: WeatherApp/Networking/WeatherRepository.swift at 2019-09-13 08:34:45 +0000
 
 //
 //  WeatherRepository.swift
