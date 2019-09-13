@@ -23,8 +23,17 @@ class MainScreenCoordinator: Coordinator{
     }
     
     func start() {
+        openSearch()
     }
     
+    func openSearch(){
+        self.viewController.openSearchScreen = {[unowned self] in
+            let coordinator = SearchScreenCoordinator(mainViewController: self.viewController)
+            self.store(coordinator: coordinator)
+            coordinator.viewController.coordinatorDelegate = self
+            coordinator.start()
+        }
+    }
     
 }
 

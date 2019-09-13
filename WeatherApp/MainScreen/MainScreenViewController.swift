@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import Hue
 
-class MainScreenViewController: UIViewController{
+class MainScreenViewController: UIViewController, UISearchBarDelegate{
     
     let bodyImage: UIImageView = {
         let imageView = UIImageView()
@@ -113,6 +113,7 @@ class MainScreenViewController: UIViewController{
     let viewModel: MainScreenViewModel
     let gradientColors = GradientColors()
     let loader = LoaderViewController()
+    var openSearchScreen: () -> Void = {}
     
     init(viewModel: MainScreenViewModel){
         self.viewModel = viewModel
@@ -169,6 +170,8 @@ class MainScreenViewController: UIViewController{
         self.view.addSubview(searchBar)
         
         setupConstraints()
+        
+        searchBar.delegate = self
     }
     
     func setupConstraints(){
@@ -187,7 +190,7 @@ class MainScreenViewController: UIViewController{
         backgroundGradient.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         
-        temperatureLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 15).isActive = true
+        temperatureLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 10).isActive = true
         temperatureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         temperatureLabel.heightAnchor.constraint(equalToConstant: 72).isActive = true
         
@@ -195,7 +198,7 @@ class MainScreenViewController: UIViewController{
         summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         summaryLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
-        placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 15).isActive = true
+        placeLabel.topAnchor.constraint(equalToSystemSpacingBelow: summaryLabel.bottomAnchor, multiplier: 5).isActive = true
         placeLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
@@ -351,12 +354,12 @@ class MainScreenViewController: UIViewController{
         
         let temperatures = viewModel.findMinAndMaxTemperatures()
         
-        minTempLabel.text = "\(temperatures.min.rounded(toPlaces: 1))˚F"
+        minTempLabel.text = "\(temperatures.min.rounded(toPlaces: 1))˚C"
         minTempLabel.textColor = .white
         minTempLabel.font = UIFont(name: "GothamRounded-Light", size: 24)
         minTempLabel.textAlignment = .center
         
-        maxTempLabel.text = "\(temperatures.max.rounded(toPlaces: 1))˚F"
+        maxTempLabel.text = "\(temperatures.max.rounded(toPlaces: 1))˚C"
         maxTempLabel.textColor = .white
         maxTempLabel.font = UIFont(name: "GothamRounded-Light", size: 24)
         maxTempLabel.textAlignment = .center
@@ -414,18 +417,22 @@ class MainScreenViewController: UIViewController{
         
         pressureLabel.topAnchor.constraint(equalTo: pressure.bottomAnchor, constant: 10).isActive = true
         pressureLabel.trailingAnchor.constraint(equalTo: statsView.trailingAnchor, constant: -30).isActive = true
-        pressureLabel.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        pressureLabel.widthAnchor.constraint(equalToConstant: 91).isActive = true
         
         let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0
         humidityLabel.text = "\(humidityText.rounded(toPlaces: 1))%"
         
         let windText = viewModel.weatherResponse?.currently.windSpeed ?? 0
-        windLabel.text = "\(windText.rounded(toPlaces: 1)) mph"
+        windLabel.text = "\(windText.rounded(toPlaces: 1)) km/h"
         
         let pressureText = Int(viewModel.weatherResponse?.currently.pressure ?? 0)
         pressureLabel.text = "\(pressureText) hpa"
     }
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        openSearchScreen()
+        return false
+    }
     
     func setupSubscriptions(){
         

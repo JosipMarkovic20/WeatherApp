@@ -7,3 +7,20 @@
 //
 
 import Foundation
+import RxSwift
+
+
+class SearchScreenViewModel{
+    
+    let placeRepository: PlaceNameRepository
+    let subscribeScheduler: SchedulerType
+    
+    
+    init(placeRepository: PlaceNameRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
+        self.placeRepository = placeRepository
+        self.subscribeScheduler = subscribeScheduler
+    }
+    
+    
+    
+}
