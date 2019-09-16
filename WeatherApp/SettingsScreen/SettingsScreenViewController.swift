@@ -86,6 +86,94 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         return label
     }()
     
+    let humidity: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "humidity_icon")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let wind: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "wind_icon")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let pressure: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "pressure_icon")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let humidityView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
+    let windView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
+    let pressureView: UIView = {
+        let humidityView = UIView()
+        humidityView.translatesAutoresizingMaskIntoConstraints = false
+        humidityView.backgroundColor = .clear
+        return humidityView
+    }()
+    
+    let humidityButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "checkmark_check"), for: .selected)
+        button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
+        button.isSelected = true
+        return button
+    }()
+    
+    let windButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "checkmark_check"), for: .selected)
+        button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
+        button.isSelected = true
+        return button
+    }()
+    
+    let pressureButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "checkmark_check"), for: .selected)
+        button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
+        button.isSelected = true
+        return button
+    }()
+
+    lazy var statsView: UIStackView = {
+        let statsView = UIStackView(arrangedSubviews: [humidityView, windView, pressureView])
+        statsView.translatesAutoresizingMaskIntoConstraints = false
+        statsView.axis = .horizontal
+        statsView.spacing = 20
+        statsView.distribution = .fillEqually
+        return statsView
+    }()
+    
+    let conditionsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Conditions"
+        label.font = UIFont(name: "GothamRounded-Book", size: 20)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     
     let viewModel: SettingsScreenViewModel
     weak var coordinatorDelegate: CoordinatorDelegate?
@@ -128,7 +216,15 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         view.addSubview(metricCheckBox)
         view.addSubview(imperialLabel)
         view.addSubview(metricLabel)
-        
+        view.addSubview(conditionsLabel)
+        view.addSubview(statsView)
+        humidityView.addSubview(humidity)
+        humidityView.addSubview(humidityButton)
+        pressureView.addSubview(pressure)
+        pressureView.addSubview(pressureButton)
+        windView.addSubview(wind)
+        windView.addSubview(windButton)
+
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(SettingsScreenTableCell.self, forCellReuseIdentifier: "Cell")
@@ -165,10 +261,46 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         metricLabel.leadingAnchor.constraint(equalTo: metricCheckBox.trailingAnchor, constant: 10).isActive = true
         metricLabel.bottomAnchor.constraint(equalTo: metricCheckBox.bottomAnchor).isActive = true
         
+        conditionsLabel.topAnchor.constraint(equalTo: metricLabel.bottomAnchor, constant: UIScreen.main.bounds.height * 0.05).isActive = true
+        conditionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        statsView.topAnchor.constraint(equalTo: conditionsLabel.bottomAnchor, constant: UIScreen.main.bounds.height * 0.05).isActive = true
+        statsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        statsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        statsView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
         doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         doneButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
         doneButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        setupStats()
+    }
+    
+    func setupStats(){
+        wind.topAnchor.constraint(equalTo: windView.topAnchor).isActive = true
+        wind.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
+        
+        windButton.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
+        windButton.bottomAnchor.constraint(equalTo: windView.bottomAnchor, constant: 10).isActive = true
+        windButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        windButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        humidity.topAnchor.constraint(equalTo: humidityView.topAnchor).isActive = true
+        humidity.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
+        
+        humidityButton.bottomAnchor.constraint(equalTo: humidityView.bottomAnchor, constant: 10).isActive = true
+        humidityButton.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
+        humidityButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        humidityButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        pressure.topAnchor.constraint(equalTo: pressureView.topAnchor).isActive = true
+        pressure.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
+        
+        pressureButton.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor, constant: 10).isActive = true
+        pressureButton.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
+        pressureButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        pressureButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
     @objc func dismissViewController(){
