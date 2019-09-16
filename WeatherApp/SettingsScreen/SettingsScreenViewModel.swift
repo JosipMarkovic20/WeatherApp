@@ -21,6 +21,7 @@ class SettingsScreenViewModel{
     var locations: [Place] = []
     let loadLocationsSubject = PublishSubject<Bool>()
     let tableReloadSubject = PublishSubject<Bool>()
+    let deleteLocationSubject = PublishSubject<Place>()
 
     
     init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
@@ -67,6 +68,19 @@ class SettingsScreenViewModel{
             locations.append(place)
         }
         return locations
+    }
+    
+    func deleteLocation(for subject: PublishSubject<Place>) -> Disposable{
+        
+        return subject
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .map({[unowned self] (place) -> Observable<String> in
+                let result = self.database.deleteLocation(name: place.placeName)
+                return result
+            }).subscribe(onNext: { (string) in
+                print(string)
+            })
     }
     
     func createSettingsObject(results: Results<RealmSettings>) -> SettingsData{

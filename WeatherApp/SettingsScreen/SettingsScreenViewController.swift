@@ -382,6 +382,7 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     func toDispose(){
         viewModel.loadLocations(for: viewModel.loadLocationsSubject).disposed(by: disposeBag)
         viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
+        viewModel.deleteLocation(for: viewModel.deleteLocationSubject).disposed(by: disposeBag)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

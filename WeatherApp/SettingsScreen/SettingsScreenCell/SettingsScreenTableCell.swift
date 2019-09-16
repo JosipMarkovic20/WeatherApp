@@ -37,6 +37,7 @@ class SettingsScreenTableCell: UITableViewCell{
         return label
     }()
     
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -53,6 +54,7 @@ class SettingsScreenTableCell: UITableViewCell{
         
         setupConstraints()
     }
+    
     
     func setupConstraints(){
         squareView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
