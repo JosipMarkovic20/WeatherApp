@@ -8,7 +8,7 @@
 
 import Foundation
 import RxSwift
-
+import RealmSwift
 
 class MainScreenViewModel: MainScreenViewModelProtocol{
     
@@ -19,6 +19,10 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     var loaderSubject = ReplaySubject<Bool>.create(bufferSize: 1)
     var getWeatherDataSubject = ReplaySubject<[Double]>.create(bufferSize: 1)
     var setupScreenSubject = PublishSubject<LayoutSetupEnum>()
+    let database = RealmManager()
+    var settings = SettingsData()
+    let loadSettingsSubject = ReplaySubject<Bool>.create(bufferSize: 1)
+    let settingsLoadedSubject = PublishSubject<Bool>()
     
     
     init(weatherRepository: WeatherRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
@@ -42,6 +46,37 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
                 self.loaderSubject.onNext(false)
                 print(error)
             })
+    }
+    
+    func loadSettings(for subject: ReplaySubject<Bool>) -> Disposable{
+        
+        return subject.flatMap({[unowned self] (bool) -> Observable<Results<RealmSettings>> in
+            let settings = self.database.getSettings()
+            return Observable.just(settings)
+        })
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .map({[unowned self] (results) -> SettingsData in
+                return self.createSettingsObject(results: results)
+            }).subscribe(onNext: {[unowned self] (settings) in
+                self.settings = settings
+                self.settingsLoadedSubject.onNext(true)
+            })
+    }
+    
+    func createSettingsObject(results: Results<RealmSettings>) -> SettingsData{
+        let settingsData = SettingsData()
+        for settingsResult in results{
+            settingsData.humidityIsHidden = settingsResult.humidityIsHidden
+            settingsData.pressureIsHidden = settingsResult.pressureIsHidden
+            settingsData.windIsHidden = settingsResult.windIsHidden
+            if settingsResult.unitsType == "Metric"{
+                settingsData.unitsType = .metric
+            }else{
+                settingsData.unitsType = .imperial
+            }
+        }
+        return settingsData
     }
     
     func checkIcon() -> LayoutSetupEnum{

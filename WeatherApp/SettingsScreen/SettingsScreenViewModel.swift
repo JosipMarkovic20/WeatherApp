@@ -17,6 +17,7 @@ class SettingsScreenViewModel{
     let database = RealmManager()
     var settings = SettingsData()
     let loadSettingsSubject = PublishSubject<Bool>()
+    let settingsLoadedSubject = PublishSubject<Bool>()
 
     
     init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
@@ -33,8 +34,9 @@ class SettingsScreenViewModel{
             .observeOn(MainScheduler.instance)
             .map({[unowned self] (results) -> SettingsData in
                 return self.createSettingsObject(results: results)
-            }).subscribe(onNext: { (settings) in
+            }).subscribe(onNext: {[unowned self] (settings) in
                 self.settings = settings
+                self.settingsLoadedSubject.onNext(true)
             })
     }
     

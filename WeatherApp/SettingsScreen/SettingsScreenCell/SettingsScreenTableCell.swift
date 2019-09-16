@@ -25,6 +25,7 @@ class SettingsScreenTableCell: UITableViewCell{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "GothamRounded-Book", size: 24)
         label.textColor = .white
+        label.text = "X"
         return label
     }()
     
@@ -55,7 +56,7 @@ class SettingsScreenTableCell: UITableViewCell{
     
     func setupConstraints(){
         squareView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
-        squareView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        squareView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
         squareView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         squareView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         
@@ -68,7 +69,6 @@ class SettingsScreenTableCell: UITableViewCell{
     
     func configureCell(item: Place){
         placeName.text = item.placeName
-        letterLabel.text = String(item.placeName.prefix(1))
     }
     
 }

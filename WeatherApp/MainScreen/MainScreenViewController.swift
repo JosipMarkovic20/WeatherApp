@@ -240,6 +240,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func toDispose(){
+        viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
         viewModel.collectAndPrepareData(for: viewModel.getWeatherDataSubject).disposed(by: disposeBag)
     }
     
@@ -289,6 +290,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     func getData(){
+        viewModel.loadSettingsSubject.onNext(true)
         viewModel.getWeatherDataSubject.onNext(placeCoordinates)
     }
     
@@ -310,6 +312,11 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
                 self.setupScreen(enumCase: enumCase)
             }.disposed(by: disposeBag)
         
+        viewModel.settingsLoadedSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler).subscribe(onNext: {[unowned self] (bool) in
+                self.setupBasedOnSettings(settings: self.viewModel.settings)
+            }).disposed(by: disposeBag)
         
         viewModel.loaderSubject
             .observeOn(MainScheduler.instance)

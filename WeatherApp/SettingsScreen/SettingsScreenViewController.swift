@@ -202,6 +202,7 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         toDispose()
+        setupSubscriptions()
         loadSettings()
         setupUI()
     }
@@ -213,8 +214,6 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     
     func loadSettings(){
         viewModel.loadSettingsSubject.onNext(true)
-        setupSettings()
-        print(viewModel.database.deleteSettings())
     }
     
     func setupUI(){
@@ -358,6 +357,18 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
             metricCheckBox.isSelected = false
             imperialCheckBox.isSelected = true
         }
+    }
+    
+    func setupSubscriptions(){
+        
+        viewModel.settingsLoadedSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.setupSettings()
+                print(self.viewModel.database.deleteSettings())
+            }).disposed(by: disposeBag)
+        
     }
     
     func toDispose(){
