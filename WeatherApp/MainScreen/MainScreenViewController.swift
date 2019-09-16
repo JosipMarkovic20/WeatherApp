@@ -60,6 +60,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         label.font = UIFont(name: "GothamRounded-Light", size: 72)
         label.textColor = .white
         label.textAlignment = .center
+        label.text = "24˚"
         return label
     }()
     
@@ -69,6 +70,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         label.font = UIFont(name: "GothamRounded-Light", size: 24)
         label.textColor = .white
         label.textAlignment = .center
+        label.text = "Sunny"
         return label
     }()
     
@@ -120,6 +122,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         label.textColor = .white
         label.font = UIFont(name: "GothamRounded-Light", size: 24)
         label.textAlignment = .center
+        label.text = "18˚C"
         return label
     }()
     let minLabel: UILabel = {
@@ -137,6 +140,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         label.textColor = .white
         label.font = UIFont(name: "GothamRounded-Light", size: 24)
         label.textAlignment = .center
+        label.text = "30˚C"
         return label
     }()
     let maxLabel: UILabel = {
@@ -161,6 +165,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         humidityLabel.textAlignment = .center
         humidityLabel.textColor = .white
         humidityLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        humidityLabel.text = "60%"
         return humidityLabel
     }()
     
@@ -170,6 +175,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         windLabel.textAlignment = .center
         windLabel.textColor = .white
         windLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        windLabel.text = "1.2km/h"
         return windLabel
     }()
     
@@ -179,6 +185,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         pressureLabel.textAlignment = .center
         pressureLabel.textColor = .white
         pressureLabel.font = UIFont(name: "GothamRounded-Light", size: 20)
+        pressureLabel.text = "1024hpa"
         return pressureLabel
     }()
     
@@ -484,7 +491,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
         
         let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0 * 100
-        humidityLabel.text = "\(humidityText.rounded(toPlaces: 1) * 100)%"
+        humidityLabel.text = "\(humidityText.rounded(toPlaces: 2) * 100)%"
         
         let windText = viewModel.weatherResponse?.currently.windSpeed ?? 0
         windLabel.text = "\(windText.rounded(toPlaces: 1)) km/h"

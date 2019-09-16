@@ -17,7 +17,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     var weatherRepository: WeatherRepository
     var subscribeScheduler: SchedulerType
     var loaderSubject = ReplaySubject<Bool>.create(bufferSize: 1)
-    var getWeatherDataSubject = PublishSubject<[Double]>()
+    var getWeatherDataSubject = ReplaySubject<[Double]>.create(bufferSize: 1)
     var setupScreenSubject = PublishSubject<LayoutSetupEnum>()
     
     
@@ -27,7 +27,7 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     }
     
     
-    func collectAndPrepareData(for subject: PublishSubject<[Double]>) -> Disposable{     
+    func collectAndPrepareData(for subject: ReplaySubject<[Double]>) -> Disposable{
         return subject.flatMap({[unowned self] (locationArray) -> Observable<Weather> in
             self.loaderSubject.onNext(true)
             return self.weatherRepository.getWeather(lng: locationArray[0], lat: locationArray[1])
@@ -111,8 +111,8 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
 protocol MainScreenViewModelProtocol{
     
     var weatherResponse: Weather? {get set}
-    var getWeatherDataSubject: PublishSubject<[Double]> {get set}
+    var getWeatherDataSubject: ReplaySubject<[Double]> {get set}
     var loaderSubject: ReplaySubject<Bool> {get set}
     
-    func collectAndPrepareData(for subject: PublishSubject<[Double]>) -> Disposable
+    func collectAndPrepareData(for subject: ReplaySubject<[Double]>) -> Disposable
 }

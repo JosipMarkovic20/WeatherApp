@@ -40,6 +40,8 @@
 		5F9891872328DAFD00D9EBD6 /* Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891842328DAE800D9EBD6 /* Light.otf */; };
 		5F9891892328E68E00D9EBD6 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891882328E68E00D9EBD6 /* Loader.swift */; };
 		5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* Extensions.swift */; };
+		5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */; };
+		5FBA61FB232F57B200122C86 /* SettingsScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */; };
 		5FC2B0CF232B8A9A0045DDEE /* SearchScreenViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */; };
 		5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */; };
 		5FC2B0D4232BA9960045DDEE /* LoadPlaceDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0D3232BA9960045DDEE /* LoadPlaceDataDelegate.swift */; };
@@ -97,6 +99,8 @@
 		5F9891852328DAED00D9EBD6 /* Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Book.otf; sourceTree = "<group>"; };
 		5F9891882328E68E00D9EBD6 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		5F98918A232909B000D9EBD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenTableCell.swift; sourceTree = "<group>"; };
+		5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenHeader.swift; sourceTree = "<group>"; };
 		5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenViewModelTests.swift; sourceTree = "<group>"; };
 		5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenCollectionCell.swift; sourceTree = "<group>"; };
 		5FC2B0D3232BA9960045DDEE /* LoadPlaceDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPlaceDataDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +154,8 @@
 		5F0B25C42327C0E2005B9BA3 /* SettingsScreen */ = {
 			isa = PBXGroup;
 			children = (
+				5FBA61F9232F579800122C86 /* SettingsScreenHeader */,
+				5FBA61F6232F54D600122C86 /* SettingsScreenCell */,
 				5F0B25EE2327C2CD005B9BA3 /* SettingsScreenViewController.swift */,
 				5F0B25F02327C2DB005B9BA3 /* SettingsScreenViewModel.swift */,
 				5F0B25F22327C2ED005B9BA3 /* SettingsScreenCoordinator.swift */,
@@ -314,6 +320,22 @@
 				5F9891842328DAE800D9EBD6 /* Light.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		5FBA61F6232F54D600122C86 /* SettingsScreenCell */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */,
+			);
+			path = SettingsScreenCell;
+			sourceTree = "<group>";
+		};
+		5FBA61F9232F579800122C86 /* SettingsScreenHeader */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */,
+			);
+			path = SettingsScreenHeader;
 			sourceTree = "<group>";
 		};
 		5FC2B0D0232B8F780045DDEE /* SearchScreenCell */ = {
@@ -542,6 +564,7 @@
 				5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */,
 				5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */,
 				5F0B25ED2327C2BC005B9BA3 /* SearchScreenCoordinator.swift in Sources */,
+				5FBA61FB232F57B200122C86 /* SettingsScreenHeader.swift in Sources */,
 				5F0B25D42327C1D1005B9BA3 /* PlaceSearchData.swift in Sources */,
 				5F0B25EB2327C2AB005B9BA3 /* SearchScreenViewModel.swift in Sources */,
 				5F0B25D02327C1AA005B9BA3 /* AppCoordinator.swift in Sources */,
@@ -561,6 +584,7 @@
 				5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */,
 				5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */,
 				5F0B25E62327C288005B9BA3 /* MainScreenCoordinator.swift in Sources */,
+				5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */,
 				5F0B25D62327C1E0005B9BA3 /* RealmManager.swift in Sources */,
 				5F0B25F52327C48A005B9BA3 /* CoordinatorDelegates.swift in Sources */,
 			);

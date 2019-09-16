@@ -31,7 +31,7 @@ class SearchScreenCollectionCell: UICollectionViewCell{
     let placeName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "GothamRounded-Book", size: 20)
+        label.font = UIFont(name: "GothamRounded-Book", size: 18)
         label.textColor = .white
         return label
     }()
