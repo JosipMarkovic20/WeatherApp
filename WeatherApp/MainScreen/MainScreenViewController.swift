@@ -523,8 +523,6 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
 
 extension MainScreenViewController: SettingsDelegate{
     
-    
-    
     func setupBasedOnSettings(settings: SettingsData) {
         windView.isHidden = settings.windIsHidden
         humidityView.isHidden = settings.humidityIsHidden
