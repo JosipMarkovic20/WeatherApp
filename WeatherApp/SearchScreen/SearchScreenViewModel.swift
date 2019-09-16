@@ -8,7 +8,7 @@
 
 import Foundation
 import RxSwift
-
+import RealmSwift
 
 class SearchScreenViewModel: SearchScreenProtocol{
     
@@ -17,6 +17,8 @@ class SearchScreenViewModel: SearchScreenProtocol{
     let placeRepository: PlaceNameRepository
     let subscribeScheduler: SchedulerType
     let tableReloadSubject = PublishSubject<Bool>()
+    let database = RealmManager()
+    let saveLocationSubject = PublishSubject<Place>()
     
     init(placeRepository: PlaceNameRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
         self.placeRepository = placeRepository
@@ -35,6 +37,19 @@ class SearchScreenViewModel: SearchScreenProtocol{
                 self.tableReloadSubject.onNext(true)
             })
     }
+    
+    func saveLocation(for subject: PublishSubject<Place>) -> Disposable{
+        
+        return subject.flatMap({[unowned self] (place) -> Observable<String> in
+            return self.database.saveLocation(location: place)
+        })
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(subscribeScheduler)
+            .subscribe(onNext: { (string) in
+                print(string)
+            })
+    }
+    
 
 }
 

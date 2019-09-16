@@ -70,6 +70,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     }
     
     func toDispose(){
+        viewModel.saveLocation(for: viewModel.saveLocationSubject).disposed(by: disposeBag)
         viewModel.collectAndPrepareData(for: viewModel.getPlaceDataSubject).disposed(by: disposeBag)
     }
 
@@ -173,6 +174,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         loadPlaceDelegate?.loadPlace(place: viewModel.placeResponse[indexPath.row])
+        viewModel.saveLocationSubject.onNext(viewModel.placeResponse[indexPath.row])
         dismissViewController()
     }
     
