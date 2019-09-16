@@ -38,7 +38,6 @@ class SettingsScreenHeader: UITableViewHeaderFooterView{
         contentView.addSubview(title)
         
         setupConstraints()
-        contentView.backgroundColor = .clear
     }
     
     func setupConstraints(){

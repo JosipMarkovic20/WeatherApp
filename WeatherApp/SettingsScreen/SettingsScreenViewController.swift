@@ -245,7 +245,7 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.25).isActive = true
+        tableView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.28).isActive = true
         
         unitsLabel.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: UIScreen.main.bounds.height * 0.05).isActive = true
         unitsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -339,13 +339,16 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SettingsScreenTableCell  else {
             fatalError("The dequeued cell is not an instance of SettingsScreenTableCell.")
         }
+        cell.configureCell(item: Place(placeName: "Podvinje", lng: 00, lat: 00, countryCode: "HR"))
+        cell.backgroundColor = .clear
+        cell.selectionStyle = .none
         return cell
     }
     

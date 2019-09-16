@@ -504,8 +504,8 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
         pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
         
-        let humidityText = viewModel.weatherResponse?.currently.humidity ?? 0 * 100
-        humidityLabel.text = "\(humidityText.rounded(toPlaces: 2) * 100)%"
+        let humidityText = (viewModel.weatherResponse?.currently.humidity ?? 0) * 100
+        humidityLabel.text = "\(humidityText.rounded(toPlaces: 2))%"
         
         let windText = viewModel.weatherResponse?.currently.windSpeed ?? 0
         
