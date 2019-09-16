@@ -42,6 +42,9 @@
 		5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* Extensions.swift */; };
 		5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */; };
 		5FBA61FB232F57B200122C86 /* SettingsScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */; };
+		5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FC232F7DB600122C86 /* SettingsData.swift */; };
+		5FBA61FF232F7DED00122C86 /* UnitsTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FE232F7DED00122C86 /* UnitsTypeEnum.swift */; };
+		5FBA6201232F80B200122C86 /* SettingsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA6200232F80B200122C86 /* SettingsDelegate.swift */; };
 		5FC2B0CF232B8A9A0045DDEE /* SearchScreenViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */; };
 		5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */; };
 		5FC2B0D4232BA9960045DDEE /* LoadPlaceDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2B0D3232BA9960045DDEE /* LoadPlaceDataDelegate.swift */; };
@@ -101,6 +104,9 @@
 		5F98918A232909B000D9EBD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenTableCell.swift; sourceTree = "<group>"; };
 		5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenHeader.swift; sourceTree = "<group>"; };
+		5FBA61FC232F7DB600122C86 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
+		5FBA61FE232F7DED00122C86 /* UnitsTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsTypeEnum.swift; sourceTree = "<group>"; };
+		5FBA6200232F80B200122C86 /* SettingsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDelegate.swift; sourceTree = "<group>"; };
 		5FC2B0CE232B8A9A0045DDEE /* SearchScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenViewModelTests.swift; sourceTree = "<group>"; };
 		5FC2B0D1232B8F8E0045DDEE /* SearchScreenCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenCollectionCell.swift; sourceTree = "<group>"; };
 		5FC2B0D3232BA9960045DDEE /* LoadPlaceDataDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadPlaceDataDelegate.swift; sourceTree = "<group>"; };
@@ -208,6 +214,7 @@
 			children = (
 				5F0B25D12327C1C3005B9BA3 /* MainScreenData.swift */,
 				5F0B25D32327C1D1005B9BA3 /* PlaceSearchData.swift */,
+				5FBA61FC232F7DB600122C86 /* SettingsData.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -225,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */,
+				5FBA61FE232F7DED00122C86 /* UnitsTypeEnum.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -235,6 +243,7 @@
 				5F3E68F92327BB8600E727DE /* AppDelegate.swift */,
 				5F0B25F42327C48A005B9BA3 /* CoordinatorDelegates.swift */,
 				5FC2B0D3232BA9960045DDEE /* LoadPlaceDataDelegate.swift */,
+				5FBA6200232F80B200122C86 /* SettingsDelegate.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -560,6 +569,7 @@
 			files = (
 				5F0B25F32327C2ED005B9BA3 /* SettingsScreenCoordinator.swift in Sources */,
 				5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */,
+				5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
 				5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */,
 				5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */,
@@ -585,6 +595,8 @@
 				5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */,
 				5F0B25E62327C288005B9BA3 /* MainScreenCoordinator.swift in Sources */,
 				5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */,
+				5FBA61FF232F7DED00122C86 /* UnitsTypeEnum.swift in Sources */,
+				5FBA6201232F80B200122C86 /* SettingsDelegate.swift in Sources */,
 				5F0B25D62327C1E0005B9BA3 /* RealmManager.swift in Sources */,
 				5F0B25F52327C48A005B9BA3 /* CoordinatorDelegates.swift in Sources */,
 			);

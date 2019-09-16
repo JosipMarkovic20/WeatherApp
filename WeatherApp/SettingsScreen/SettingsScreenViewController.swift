@@ -12,7 +12,7 @@ import RxSwift
 import Hue
 
 class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
-
+    
     
     let doneButton: UIButton = {
         let button = UIButton()
@@ -134,6 +134,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         button.setImage(UIImage(named: "checkmark_check"), for: .selected)
         button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
         button.isSelected = true
+        button.tag = 1
+        button.addTarget(self, action: #selector(switchConditions), for: .touchUpInside)
         return button
     }()
     
@@ -143,6 +145,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         button.setImage(UIImage(named: "checkmark_check"), for: .selected)
         button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
         button.isSelected = true
+        button.tag = 2
+        button.addTarget(self, action: #selector(switchConditions), for: .touchUpInside)
         return button
     }()
     
@@ -152,9 +156,11 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         button.setImage(UIImage(named: "checkmark_check"), for: .selected)
         button.setImage(UIImage(named: "checkmark_uncheck"), for: .normal)
         button.isSelected = true
+        button.tag = 3
+        button.addTarget(self, action: #selector(switchConditions), for: .touchUpInside)
         return button
     }()
-
+    
     lazy var statsView: UIStackView = {
         let statsView = UIStackView(arrangedSubviews: [humidityView, windView, pressureView])
         statsView.translatesAutoresizingMaskIntoConstraints = false
@@ -178,7 +184,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     let viewModel: SettingsScreenViewModel
     weak var coordinatorDelegate: CoordinatorDelegate?
     let disposeBag = DisposeBag()
-    
+    let settings = SettingsData()
+    weak var settingsDelegate: SettingsDelegate?
     
     init(viewModel: SettingsScreenViewModel) {
         self.viewModel = viewModel
@@ -224,7 +231,7 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         pressureView.addSubview(pressureButton)
         windView.addSubview(wind)
         windView.addSubview(windButton)
-
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(SettingsScreenTableCell.self, forCellReuseIdentifier: "Cell")
@@ -304,26 +311,30 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @objc func dismissViewController(){
+        settingsDelegate?.setupBasedOnSettings(settings: settings)
         dismiss(animated: true, completion: nil)
     }
     
     @objc func switchUnits(button: UIButton){
-        if button.tag == 0{
-            if imperialCheckBox.isSelected{
-                imperialCheckBox.isSelected = false
-                metricCheckBox.isSelected = true
-            }else{
-                imperialCheckBox.isSelected = true
-                metricCheckBox.isSelected = false
-            }
-        }else if button.tag == 1{
-            if metricCheckBox.isSelected{
-                imperialCheckBox.isSelected = true
-                metricCheckBox.isSelected = false
-            }else{
-                imperialCheckBox.isSelected = false
-                metricCheckBox.isSelected = true
-            }
+        imperialCheckBox.isSelected = !imperialCheckBox.isSelected
+        metricCheckBox.isSelected = !metricCheckBox.isSelected
+        if imperialCheckBox.isSelected{
+            settings.unitsType = .imperial
+        }else{
+            settings.unitsType = .metric
+        }
+    }
+    
+    @objc func switchConditions(button: UIButton){
+        if button.tag == 1{
+            humidityButton.isSelected = !humidityButton.isSelected
+            settings.humidityIsHidden = !humidityButton.isSelected
+        }else if button.tag == 2{
+            windButton.isSelected = !windButton.isSelected
+            settings.windIsHidden = !windButton.isSelected
+        }else if button.tag == 3{
+            pressureButton.isSelected = !pressureButton.isSelected
+            settings.pressureIsHidden = !pressureButton.isSelected
         }
     }
     

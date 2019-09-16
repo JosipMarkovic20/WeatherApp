@@ -217,6 +217,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     var openSearchScreen: () -> Void = {}
     var openSettingsScreen: () -> Void = {}
     var placeCoordinates: [Double] = [18.6938889,45.5511111]
+    var unitsType: UnitsTypeEnum = .metric
     
     init(viewModel: MainScreenViewModel){
         self.viewModel = viewModel
@@ -436,7 +437,14 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         }
         backgroundGradient.setupUI()
         
-        temperatureLabel.text = "\(Int(viewModel.weatherResponse?.currently.temperature ?? 0))˚"
+        let temperature = viewModel.weatherResponse?.currently.temperature ?? 0
+        
+        if unitsType == .metric{
+            temperatureLabel.text = "\(Int(temperature))˚"
+        }else if unitsType == .imperial{
+            temperatureLabel.text = "\((temperature * 9/5).rounded(toPlaces: 1) + 32)˚"
+        }
+        
         summaryLabel.text = viewModel.weatherResponse?.currently.summary
         
         setupMinAndMax()
@@ -467,8 +475,14 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         
         let temperatures = viewModel.findMinAndMaxTemperatures()
         
-        minTempLabel.text = "\(temperatures.min.rounded(toPlaces: 1))˚C"
-        maxTempLabel.text = "\(temperatures.max.rounded(toPlaces: 1))˚C"
+        if unitsType == .metric{
+            minTempLabel.text = "\(temperatures.min.rounded(toPlaces: 1))˚C"
+            maxTempLabel.text = "\(temperatures.max.rounded(toPlaces: 1))˚C"
+        }else if unitsType == .imperial{
+            minTempLabel.text = "\((temperatures.min * 9/5 + 32).rounded(toPlaces: 1))˚F"
+            maxTempLabel.text = "\((temperatures.max * 9/5 + 32).rounded(toPlaces: 1))˚F"
+        }
+
     }
     
     func setupStats(){
@@ -494,9 +508,30 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         humidityLabel.text = "\(humidityText.rounded(toPlaces: 2) * 100)%"
         
         let windText = viewModel.weatherResponse?.currently.windSpeed ?? 0
-        windLabel.text = "\(windText.rounded(toPlaces: 1)) km/h"
+        
+        if unitsType == .metric{
+            windLabel.text = "\(windText.rounded(toPlaces: 1)) km/h"
+        }else if unitsType == .imperial{
+            windLabel.text = "\((windText / 1.6).rounded(toPlaces: 1)) mph"
+        }
         
         let pressureText = Int(viewModel.weatherResponse?.currently.pressure ?? 0)
         pressureLabel.text = "\(pressureText) hpa"
     }
+}
+
+
+extension MainScreenViewController: SettingsDelegate{
+    
+    
+    
+    func setupBasedOnSettings(settings: SettingsData) {
+        windView.isHidden = settings.windIsHidden
+        humidityView.isHidden = settings.humidityIsHidden
+        pressureView.isHidden = settings.pressureIsHidden
+        
+        unitsType = settings.unitsType
+        setupScreen(enumCase: viewModel.checkIcon())
+    }
+  
 }

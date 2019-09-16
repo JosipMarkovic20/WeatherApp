@@ -42,6 +42,7 @@ class MainScreenCoordinator: Coordinator{
             let coordinator = SettingsScreenCoordinator(mainViewController: self.viewController)
             self.store(coordinator: coordinator)
             coordinator.viewController.coordinatorDelegate = self
+            coordinator.viewController.settingsDelegate = self.viewController
             coordinator.start()
         }
     }
