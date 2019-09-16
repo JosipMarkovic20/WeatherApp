@@ -205,6 +205,7 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         setupSubscriptions()
         loadSettings()
         setupUI()
+        viewModel.loadLocationsSubject.onNext(true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -369,21 +370,29 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
                 print(self.viewModel.database.deleteSettings())
             }).disposed(by: disposeBag)
         
+        viewModel.tableReloadSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.tableView.reloadData()
+            }).disposed(by: disposeBag)
+        
     }
     
     func toDispose(){
+        viewModel.loadLocations(for: viewModel.loadLocationsSubject).disposed(by: disposeBag)
         viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return viewModel.locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SettingsScreenTableCell  else {
             fatalError("The dequeued cell is not an instance of SettingsScreenTableCell.")
         }
-        cell.configureCell(item: Place(placeName: "Podvinje", lng: 00, lat: 00, countryCode: "HR"))
+        cell.configureCell(item: viewModel.locations[indexPath.row])
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

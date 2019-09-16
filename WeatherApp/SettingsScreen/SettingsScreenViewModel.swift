@@ -18,6 +18,9 @@ class SettingsScreenViewModel{
     var settings = SettingsData()
     let loadSettingsSubject = PublishSubject<Bool>()
     let settingsLoadedSubject = PublishSubject<Bool>()
+    var locations: [Place] = []
+    let loadLocationsSubject = PublishSubject<Bool>()
+    let tableReloadSubject = PublishSubject<Bool>()
 
     
     init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
@@ -40,6 +43,32 @@ class SettingsScreenViewModel{
             })
     }
     
+    func loadLocations(for subject: PublishSubject<Bool>) -> Disposable{
+        
+        return subject.flatMap({ (bool) -> Observable<Results<RealmLocation>> in
+            let locations = self.database.getLocations()
+            return Observable.just(locations)
+        })
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .map({[unowned self] (results) -> [Place] in
+                return self.createLocationsArray(results: results)
+            })
+            .subscribe(onNext: {[unowned self] (locations) in
+                self.locations = locations
+                self.tableReloadSubject.onNext(true)
+            })
+    }
+    
+    func createLocationsArray(results: Results<RealmLocation>) -> [Place]{
+        var locations: [Place] = []
+        for location in results{
+            let place = Place(placeName: location.name, lng: location.lng, lat: location.lat, countryCode: location.countryCode)
+            locations.append(place)
+        }
+        return locations
+    }
+    
     func createSettingsObject(results: Results<RealmSettings>) -> SettingsData{
         let settingsData = SettingsData()
         for settingsResult in results{
@@ -54,6 +83,8 @@ class SettingsScreenViewModel{
         }
         return settingsData
     }
+    
+    
     
     
 }
