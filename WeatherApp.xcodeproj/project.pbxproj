@@ -13,7 +13,7 @@
 		5F0B25D22327C1C3005B9BA3 /* MainScreenData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25D12327C1C3005B9BA3 /* MainScreenData.swift */; };
 		5F0B25D42327C1D1005B9BA3 /* PlaceSearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25D32327C1D1005B9BA3 /* PlaceSearchData.swift */; };
 		5F0B25D62327C1E0005B9BA3 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25D52327C1E0005B9BA3 /* RealmManager.swift */; };
-		5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25D82327C1FD005B9BA3 /* RealmWeather.swift */; };
+		5F0B25D92327C1FD005B9BA3 /* RealmLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25D82327C1FD005B9BA3 /* RealmLocation.swift */; };
 		5F0B25DB2327C21F005B9BA3 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25DA2327C21F005B9BA3 /* AlamofireManager.swift */; };
 		5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25DC2327C22B005B9BA3 /* WeatherRepository.swift */; };
 		5F0B25DF2327C253005B9BA3 /* PlaceNameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0B25DE2327C253005B9BA3 /* PlaceNameRepository.swift */; };
@@ -71,7 +71,7 @@
 		5F0B25D12327C1C3005B9BA3 /* MainScreenData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenData.swift; sourceTree = "<group>"; };
 		5F0B25D32327C1D1005B9BA3 /* PlaceSearchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchData.swift; sourceTree = "<group>"; };
 		5F0B25D52327C1E0005B9BA3 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
-		5F0B25D82327C1FD005B9BA3 /* RealmWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWeather.swift; sourceTree = "<group>"; };
+		5F0B25D82327C1FD005B9BA3 /* RealmLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmLocation.swift; sourceTree = "<group>"; };
 		5F0B25DA2327C21F005B9BA3 /* AlamofireManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
 		5F0B25DC2327C22B005B9BA3 /* WeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRepository.swift; sourceTree = "<group>"; };
 		5F0B25DE2327C253005B9BA3 /* PlaceNameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceNameRepository.swift; sourceTree = "<group>"; };
@@ -251,7 +251,7 @@
 		5F0B25D72327C1E4005B9BA3 /* RealmDataModel */ = {
 			isa = PBXGroup;
 			children = (
-				5F0B25D82327C1FD005B9BA3 /* RealmWeather.swift */,
+				5F0B25D82327C1FD005B9BA3 /* RealmLocation.swift */,
 			);
 			path = RealmDataModel;
 			sourceTree = "<group>";
@@ -571,7 +571,7 @@
 				5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */,
 				5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
-				5F0B25D92327C1FD005B9BA3 /* RealmWeather.swift in Sources */,
+				5F0B25D92327C1FD005B9BA3 /* RealmLocation.swift in Sources */,
 				5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */,
 				5F0B25ED2327C2BC005B9BA3 /* SearchScreenCoordinator.swift in Sources */,
 				5FBA61FB232F57B200122C86 /* SettingsScreenHeader.swift in Sources */,

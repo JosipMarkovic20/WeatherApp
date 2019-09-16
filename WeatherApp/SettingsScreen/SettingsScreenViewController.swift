@@ -184,7 +184,6 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     let viewModel: SettingsScreenViewModel
     weak var coordinatorDelegate: CoordinatorDelegate?
     let disposeBag = DisposeBag()
-    let settings = SettingsData()
     weak var settingsDelegate: SettingsDelegate?
     
     init(viewModel: SettingsScreenViewModel) {
@@ -202,12 +201,20 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     
     
     override func viewDidLoad() {
+        toDispose()
+        loadSettings()
         setupUI()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         coordinatorDelegate?.viewControllerHasFinished()
+    }
+    
+    func loadSettings(){
+        viewModel.loadSettingsSubject.onNext(true)
+        setupSettings()
+        print(viewModel.database.deleteSettings())
     }
     
     func setupUI(){
@@ -311,7 +318,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @objc func dismissViewController(){
-        settingsDelegate?.setupBasedOnSettings(settings: settings)
+        settingsDelegate?.setupBasedOnSettings(settings: viewModel.settings)
+        print(viewModel.database.saveSettings(settings: viewModel.settings))
         dismiss(animated: true, completion: nil)
     }
     
@@ -319,23 +327,41 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         imperialCheckBox.isSelected = !imperialCheckBox.isSelected
         metricCheckBox.isSelected = !metricCheckBox.isSelected
         if imperialCheckBox.isSelected{
-            settings.unitsType = .imperial
+            viewModel.settings.unitsType = .imperial
         }else{
-            settings.unitsType = .metric
+            viewModel.settings.unitsType = .metric
         }
     }
     
     @objc func switchConditions(button: UIButton){
         if button.tag == 1{
             humidityButton.isSelected = !humidityButton.isSelected
-            settings.humidityIsHidden = !humidityButton.isSelected
+            viewModel.settings.humidityIsHidden = !humidityButton.isSelected
         }else if button.tag == 2{
             windButton.isSelected = !windButton.isSelected
-            settings.windIsHidden = !windButton.isSelected
+            viewModel.settings.windIsHidden = !windButton.isSelected
         }else if button.tag == 3{
             pressureButton.isSelected = !pressureButton.isSelected
-            settings.pressureIsHidden = !pressureButton.isSelected
+            viewModel.settings.pressureIsHidden = !pressureButton.isSelected
         }
+    }
+    
+    func setupSettings(){
+        humidityButton.isSelected = !viewModel.settings.humidityIsHidden
+        windButton.isSelected = !viewModel.settings.windIsHidden
+        pressureButton.isSelected = !viewModel.settings.pressureIsHidden
+        switch viewModel.settings.unitsType {
+        case .metric:
+            metricCheckBox.isSelected = true
+            imperialCheckBox.isSelected = false
+        case .imperial:
+            metricCheckBox.isSelected = false
+            imperialCheckBox.isSelected = true
+        }
+    }
+    
+    func toDispose(){
+        viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
