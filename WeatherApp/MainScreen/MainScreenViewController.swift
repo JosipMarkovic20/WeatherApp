@@ -35,7 +35,7 @@ class MainScreenViewController: UIViewController{
     override func viewDidLoad() {
         toDispose()
         setupSubscriptions()
-        viewModel.loadLastLocationSubject.onNext(true)
+//        viewModel.loadLastLocationSubject.onNext(true)
         viewModel.getLocation()
         setupUI()
     }

@@ -27,7 +27,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     let loadSettingsSubject = ReplaySubject<Bool>.create(bufferSize: 1)
     let settingsLoadedSubject = PublishSubject<Bool>()
     var lastPlaceCoordinates: [Double] = [18.6938889, 45.5511111]
-    var lastPlaceName: String = ""
+    var lastPlaceName: String = "Osijek"
     let locationManager = CLLocationManager()
     let locationLoadedSubject = PublishSubject<String>()
     let loadLastLocationSubject = PublishSubject<Bool>()
@@ -62,12 +62,18 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            guard let location: CLLocation = locationManager.location else { return }
+            guard let location: CLLocation = locationManager.location else {
+                loadLastLocationSubject.onNext(true)
+                return
+            }
             lastPlaceCoordinates = [Double(location.coordinate.longitude), Double(location.coordinate.latitude)]
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location, completionHandler: {[unowned self](placemarks, error) in
                 self.locationLoadedSubject.onNext(placemarks?[0].locality ?? "")
+                self.getWeatherDataSubject.onNext(self.lastPlaceCoordinates)
             })
+        }else{
+            loadLastLocationSubject.onNext(true)
         }
     }
     
@@ -81,16 +87,19 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .map({ (realmLocation) -> ([Double], String) in
-                let coordinates: [Double] = [Double(realmLocation[0].lng) ?? 0, Double(realmLocation[0].lat) ?? 0, ]
-                let name = realmLocation[0].name
-                return (coordinates, name)
+                if !realmLocation.isEmpty{
+                    let coordinates: [Double] = [Double(realmLocation[0].lng) ?? 0, Double(realmLocation[0].lat) ?? 0, ]
+                    let name = realmLocation[0].name
+                    return (coordinates, name)
+                }
+                return ([],"")
             })
             .subscribe(onNext: {[unowned self] (coordinates, name) in
                 if name != ""{
                     self.lastPlaceName = name
                     self.lastPlaceCoordinates = coordinates
                 }
-                self.getWeatherDataSubject.onNext(coordinates)
+                self.getWeatherDataSubject.onNext(self.lastPlaceCoordinates)
             })
     }
     
