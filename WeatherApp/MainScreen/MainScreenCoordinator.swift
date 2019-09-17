@@ -43,6 +43,7 @@ class MainScreenCoordinator: Coordinator{
             self.store(coordinator: coordinator)
             coordinator.viewController.coordinatorDelegate = self
             coordinator.viewController.settingsDelegate = self.viewController
+            coordinator.viewController.loadPlaceDelegate = self
             coordinator.start()
         }
     }
@@ -54,9 +55,11 @@ extension MainScreenCoordinator: ParentCoordinatorDelegate, CoordinatorDelegate,
     
     
     func loadPlace(place: Place) {
-        viewController.placeCoordinates = [place.lng, place.lat]
+        guard let longitude = Double(place.lng) else { return }
+        guard let lattitude = Double(place.lat) else { return }
+        viewController.placeCoordinates = [longitude, lattitude]
         viewController.getData()
-        viewController.placeLabel.text = place.placeName
+        viewController.placeLabel.text = place.name
     }
     
     func childHasFinished(coordinator: Coordinator) {

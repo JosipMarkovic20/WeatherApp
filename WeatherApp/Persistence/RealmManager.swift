@@ -15,8 +15,8 @@ class RealmManager {
     
     let realm = try? Realm()
     
-    func deleteLocation(name: String) -> Observable<String>{
-        guard let realmLocation = self.realm?.object(ofType: RealmLocation.self, forPrimaryKey: name) else { return Observable.just("Object not found!")}
+    func deleteLocation(geonameId: Int) -> Observable<String>{
+        guard let realmLocation = self.realm?.object(ofType: RealmLocation.self, forPrimaryKey: geonameId) else { return Observable.just("Object not found!")}
         
         do{
             try self.realm?.write {
@@ -40,6 +40,38 @@ class RealmManager {
         }
         return Observable.just("Object saved!")
     }
+    
+    func saveLastLocation(location: Place) -> Observable<String>{
+        let realmLocation = LastRealmLocation()
+        realmLocation.createRealmLocation(location: location)
+        do{
+            try realm?.write {
+                realm?.add(realmLocation)
+            }
+        }catch{
+            return Observable.just("Error saving object!")
+        }
+        return Observable.just("Object saved!")
+    }
+    
+    func deleteLastLocation() -> Observable<String>{
+        let backThreadRealm = try? Realm()
+        guard let allLastLocations = backThreadRealm?.objects(LastRealmLocation.self) else { return Observable.just("Object not found!") }
+        do{
+            try backThreadRealm?.write {
+                backThreadRealm?.delete(allLastLocations)
+            }
+        }catch{
+            return Observable.just("Error deleting settings!")
+        }
+        return Observable.just("Settings deleted!")
+    }
+    
+    func getLastLocation() -> Results<LastRealmLocation>{
+        let backThreadRealm = try! Realm()
+        return backThreadRealm.objects(LastRealmLocation.self)
+    }
+    
     
     func getLocations() -> Results<RealmLocation>{
         let backThreadRealm = try! Realm()

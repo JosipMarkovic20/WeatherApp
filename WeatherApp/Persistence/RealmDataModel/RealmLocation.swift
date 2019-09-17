@@ -12,19 +12,21 @@ import RealmSwift
 
 class RealmLocation: Object{
     @objc dynamic var name: String = ""
-    @objc dynamic var lng: Double = 0
-    @objc dynamic var lat: Double = 0
+    @objc dynamic var lng: String = ""
+    @objc dynamic var lat: String = ""
     @objc dynamic var countryCode: String = ""
+    @objc dynamic var geonameId: Int = 0
     
     func createRealmLocation(location: Place){
-        self.name = location.placeName
+        self.name = location.name
         self.lng = location.lng
         self.lat = location.lat
         self.countryCode = location.countryCode
+        self.geonameId = location.geonameId
     }
     
     override class func primaryKey() -> String?{
-        return "name"
+        return "geonameId"
     }
 }
 
@@ -43,5 +45,19 @@ class RealmSettings: Object{
         }else{
             self.unitsType = "Imperial"
         }
+    }
+}
+
+
+class LastRealmLocation: Object{
+    
+    @objc dynamic var name: String = ""
+    @objc dynamic var lng: String = ""
+    @objc dynamic var lat: String = ""
+  
+    func createRealmLocation(location: Place){
+        self.name = location.name
+        self.lng = location.lng
+        self.lat = location.lat
     }
 }

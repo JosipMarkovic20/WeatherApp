@@ -60,7 +60,7 @@ class SearchScreenViewModelTests: QuickSpec{
                         expect(element.countryCode).toNot(beNil())
                         expect(element.lat).toNot(beNil())
                         expect(element.lng).toNot(beNil())
-                        expect(element.placeName).toNot(beNil())
+                        expect(element.name).toNot(beNil())
                     }
                 }
                 

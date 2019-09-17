@@ -229,6 +229,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     override func viewDidLoad() {
+        placeCoordinates = loadFromRealm()
         setupUI()
         toDispose()
         setupSubscriptions()
@@ -242,6 +243,21 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     func toDispose(){
         viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
         viewModel.collectAndPrepareData(for: viewModel.getWeatherDataSubject).disposed(by: disposeBag)
+    }
+    
+    func loadFromRealm() -> [Double]{
+        var coordinates: [Double] = []
+        var name: String = ""
+        let locations = viewModel.database.getLastLocation()
+        if !locations.isEmpty{
+            for location in locations{
+                coordinates = [Double(location.lng) ?? 0, Double(location.lat) ?? 0]
+                name = location.name
+            }
+            placeLabel.text = name
+            return coordinates
+        }
+        return [18.6938889,45.5511111]
     }
     
     func setupSearchBar(){
@@ -343,7 +359,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         headerImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         headerImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         headerImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    
+        
         backgroundGradient.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         backgroundGradient.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         backgroundGradient.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -489,7 +505,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
             minTempLabel.text = "\((temperatures.min * 9/5 + 32).rounded(toPlaces: 1))˚F"
             maxTempLabel.text = "\((temperatures.max * 9/5 + 32).rounded(toPlaces: 1))˚F"
         }
-
+        
     }
     
     func setupStats(){
@@ -507,7 +523,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
         
         pressure.topAnchor.constraint(equalTo: pressureView.topAnchor).isActive = true
         pressure.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
-
+        
         pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
         pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
         
@@ -538,5 +554,5 @@ extension MainScreenViewController: SettingsDelegate{
         unitsType = settings.unitsType
         setupScreen(enumCase: viewModel.checkIcon())
     }
-  
+    
 }

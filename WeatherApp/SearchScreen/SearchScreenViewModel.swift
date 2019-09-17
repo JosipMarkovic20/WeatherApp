@@ -31,7 +31,7 @@ class SearchScreenViewModel: SearchScreenProtocol{
         })
             .map({ (placeData) -> [Place] in
                 self.placeResponse.removeAll()
-                return placeData.postalCodes
+                return placeData.geonames
             }).subscribe(onNext: { (places) in
                 self.placeResponse = places
                 self.tableReloadSubject.onNext(true)
@@ -41,7 +41,12 @@ class SearchScreenViewModel: SearchScreenProtocol{
     func saveLocation(for subject: PublishSubject<Place>) -> Disposable{
         
         return subject.flatMap({[unowned self] (place) -> Observable<String> in
-            return self.database.saveLocation(location: place)
+            guard let location = self.database.realm?.object(ofType: RealmLocation.self, forPrimaryKey: place.geonameId) else{
+                print(self.database.deleteLastLocation())
+                print(self.database.saveLastLocation(location: place))
+                return self.database.saveLocation(location: place)
+            }
+            return Observable.just("\(location.name) already saved in database")
         })
             .observeOn(MainScheduler.instance)
             .subscribeOn(subscribeScheduler)

@@ -37,6 +37,8 @@ class SettingsScreenTableCell: UITableViewCell{
         return label
     }()
     
+    weak var deleteLocationDelegate: DeleteLocationDelegate?
+    var geonameId: Int?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,8 +55,13 @@ class SettingsScreenTableCell: UITableViewCell{
         squareView.addSubview(letterLabel)
         
         setupConstraints()
+        let deleteGesture = UITapGestureRecognizer(target: self, action:  #selector(deleteLocation))
+        self.squareView.addGestureRecognizer(deleteGesture)
     }
     
+    @objc func deleteLocation(){
+        deleteLocationDelegate?.deleteLocation(geonameId: geonameId ?? 0)
+    }
     
     func setupConstraints(){
         squareView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
@@ -69,8 +76,8 @@ class SettingsScreenTableCell: UITableViewCell{
         placeName.leadingAnchor.constraint(equalTo: squareView.trailingAnchor, constant: 10).isActive = true
     }
     
-    func configureCell(item: Place){
-        placeName.text = item.placeName
+    func configureCell(name: String){
+        placeName.text = name
     }
     
 }

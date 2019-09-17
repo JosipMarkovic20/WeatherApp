@@ -68,7 +68,7 @@ class SearchScreenCollectionCell: UICollectionViewCell{
     }
     
     func configureCell(item: Place){
-        placeName.text = item.placeName
-        letterLabel.text = String(item.placeName.prefix(1))
+        placeName.text = item.name
+        letterLabel.text = String(item.name.prefix(1))
     }
 }

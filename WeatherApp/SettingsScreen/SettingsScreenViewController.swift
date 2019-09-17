@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RxSwift
 import Hue
+import RealmSwift
 
 class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
@@ -185,6 +186,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     weak var coordinatorDelegate: CoordinatorDelegate?
     let disposeBag = DisposeBag()
     weak var settingsDelegate: SettingsDelegate?
+    var token: NotificationToken?
+    weak var loadPlaceDelegate: LoadPlaceDataDelegate?
     
     init(viewModel: SettingsScreenViewModel) {
         self.viewModel = viewModel
@@ -323,6 +326,15 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         dismiss(animated: true, completion: nil)
     }
     
+    func openSelectedLocation(indexPath: Int){
+        guard let locations = viewModel.locations else { return }
+        let locationsArray = viewModel.createLocationsArray(results: locations)
+        loadPlaceDelegate?.loadPlace(place: locationsArray[indexPath])
+        settingsDelegate?.setupBasedOnSettings(settings: viewModel.settings)
+        print(viewModel.database.saveSettings(settings: viewModel.settings))
+        dismiss(animated: true, completion: nil)
+    }
+    
     @objc func switchUnits(button: UIButton){
         imperialCheckBox.isSelected = !imperialCheckBox.isSelected
         metricCheckBox.isSelected = !metricCheckBox.isSelected
@@ -377,6 +389,13 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
                 self.tableView.reloadData()
             }).disposed(by: disposeBag)
         
+        viewModel.locationsLoadedSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.observeLocations()
+            }).disposed(by: disposeBag)
+        
     }
     
     func toDispose(){
@@ -385,17 +404,48 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         viewModel.deleteLocation(for: viewModel.deleteLocationSubject).disposed(by: disposeBag)
     }
     
+    func observeLocations(){
+        guard let locations = viewModel.locations else { return }
+        
+        self.token = locations.observe({[unowned self] (changes) in
+            switch changes {
+            case .initial(_):
+                self.tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: insertions.map({
+                    return IndexPath(row: $0, section: 0) }), with: .automatic)
+                self.tableView.deleteRows(at: deletions.map({
+                    return IndexPath(row: $0, section: 0)}), with: .automatic)
+                self.tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                self.tableView.endUpdates()
+            case .error(let error):
+                print("There has been an error: \(error)")
+            }
+        })
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.locations.count
+        return viewModel.locations?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(self.viewModel.database.deleteLastLocation())
+        guard let realmLocations = viewModel.locations else { return }
+        let locations = viewModel.createLocationsArray(results: realmLocations)
+        print(self.viewModel.database.saveLastLocation(location: locations[indexPath.row]))
+        openSelectedLocation(indexPath: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? SettingsScreenTableCell  else {
             fatalError("The dequeued cell is not an instance of SettingsScreenTableCell.")
         }
-        cell.configureCell(item: viewModel.locations[indexPath.row])
+        cell.configureCell(name: viewModel.locations?[indexPath.row].name ?? "Osijek")
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
+        cell.deleteLocationDelegate = self
+        cell.geonameId = viewModel.locations?[indexPath.row].geonameId
         return cell
     }
     
@@ -407,3 +457,13 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
     }
     
 }
+
+
+
+extension SettingsScreenViewController: DeleteLocationDelegate{
+    
+    func deleteLocation(geonameId: Int) {
+        viewModel.deleteLocationSubject.onNext(geonameId)
+    }
+}
+

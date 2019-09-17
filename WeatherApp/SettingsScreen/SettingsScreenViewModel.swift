@@ -18,10 +18,11 @@ class SettingsScreenViewModel{
     var settings = SettingsData()
     let loadSettingsSubject = PublishSubject<Bool>()
     let settingsLoadedSubject = PublishSubject<Bool>()
-    var locations: [Place] = []
+    var locations: Results<RealmLocation>?
     let loadLocationsSubject = PublishSubject<Bool>()
     let tableReloadSubject = PublishSubject<Bool>()
-    let deleteLocationSubject = PublishSubject<Place>()
+    let deleteLocationSubject = PublishSubject<Int>()
+    let locationsLoadedSubject = PublishSubject<Bool>()
 
     
     init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
@@ -46,37 +47,38 @@ class SettingsScreenViewModel{
     
     func loadLocations(for subject: PublishSubject<Bool>) -> Disposable{
         
-        return subject.flatMap({ (bool) -> Observable<Results<RealmLocation>> in
+        return subject.flatMap({[unowned self] (bool) -> Observable<Results<RealmLocation>> in
             let locations = self.database.getLocations()
             return Observable.just(locations)
         })
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
-            .map({[unowned self] (results) -> [Place] in
-                return self.createLocationsArray(results: results)
+            .map({(results) -> Results<RealmLocation> in
+                return results
             })
             .subscribe(onNext: {[unowned self] (locations) in
                 self.locations = locations
                 self.tableReloadSubject.onNext(true)
+                self.locationsLoadedSubject.onNext(true)
             })
     }
     
     func createLocationsArray(results: Results<RealmLocation>) -> [Place]{
         var locations: [Place] = []
         for location in results{
-            let place = Place(placeName: location.name, lng: location.lng, lat: location.lat, countryCode: location.countryCode)
+            let place = Place(name: location.name, lng: location.lng, lat: location.lat, geonameId: location.geonameId, countryCode: location.countryCode)
             locations.append(place)
         }
         return locations
     }
     
-    func deleteLocation(for subject: PublishSubject<Place>) -> Disposable{
+    func deleteLocation(for subject: PublishSubject<Int>) -> Disposable{
         
         return subject
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .observeOn(MainScheduler.instance)
             .map({[unowned self] (place) -> Observable<String> in
-                let result = self.database.deleteLocation(name: place.placeName)
+                let result = self.database.deleteLocation(geonameId: place)
                 return result
             }).subscribe(onNext: { (string) in
                 print(string)

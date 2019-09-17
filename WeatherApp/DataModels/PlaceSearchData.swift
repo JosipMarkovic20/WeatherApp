@@ -10,12 +10,13 @@ import Foundation
 
 
 struct PlaceData: Decodable{
-    let postalCodes: [Place]
+    let geonames: [Place]
 }
 
 struct Place: Decodable{
-    let placeName: String
-    let lng: Double
-    let lat: Double
+    let name: String
+    let lng: String
+    let lat: String
+    let geonameId: Int
     let countryCode: String
 }
