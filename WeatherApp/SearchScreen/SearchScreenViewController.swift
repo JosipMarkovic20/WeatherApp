@@ -5,7 +5,7 @@
 //  Created by Josip Marković on 10/09/2019.
 //  Copyright © 2019 Josip Marković. All rights reserved.
 //
-
+#warning("Prvo dohvatit podatke onda tek dissmisat kontroler")
 import Foundation
 import UIKit
 import RxSwift

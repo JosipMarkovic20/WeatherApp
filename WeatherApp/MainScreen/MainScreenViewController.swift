@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import RxSwift
 import Hue
-import CoreLocation
 
-class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
+
+class MainScreenViewController: UIViewController{
     
     
     
@@ -20,9 +20,7 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
     let viewModel: MainScreenViewModel
     let loader = LoaderViewController()
     var openSettingsScreen: () -> Void = {}
-    var placeCoordinates: [Double] = [18.6938889,45.5511111]
     var unitsType: UnitsTypeEnum = .metric
-    let locationManager = CLLocationManager()
     let screenView = MainScreenView()
     
     init(viewModel: MainScreenViewModel){
@@ -35,11 +33,11 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
     }
     
     override func viewDidLoad() {
-        setupUI()
         toDispose()
-        getLocation()
         setupSubscriptions()
-        getData() 
+        viewModel.loadLastLocationSubject.onNext(true)
+        viewModel.getLocation()
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,47 +59,12 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
         
     }
     
-    func getLocation(){
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            guard let location: CLLocation = locationManager.location else {
-                placeCoordinates = loadFromRealm()
-                return }
-            print("locations = \(location.coordinate.latitude) \(location.coordinate.longitude)")
-            placeCoordinates = [location.coordinate.longitude, location.coordinate.latitude]
-            let geocoder = CLGeocoder()
-            geocoder.reverseGeocodeLocation(location, completionHandler: {[unowned self](placemarks, error) in
-                print("\(String(describing: placemarks?[0].locality))")
-                self.screenView.placeLabel.text = placemarks?[0].locality
-            })
-        }else{
-            placeCoordinates = loadFromRealm()
-        }
-        
-    }
-    
-    
-    
     func toDispose(){
         viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
         viewModel.collectAndPrepareData(for: viewModel.getWeatherDataSubject).disposed(by: disposeBag)
+        viewModel.loadLastLocation(for: viewModel.loadLastLocationSubject).disposed(by: disposeBag)
     }
     
-    func loadFromRealm() -> [Double]{
-        var coordinates: [Double] = []
-        let locations = viewModel.database.getLastLocation()
-        if !locations.isEmpty{
-            for location in locations{
-                coordinates = [Double(location.lng) ?? 0, Double(location.lat) ?? 0]
-                screenView.placeLabel.text = location.name
-            }
-            return coordinates
-        }
-        return [18.6938889,45.5511111]
-    }
     
     func setupSearchBar(){
         let searchTextField:UITextField = screenView.searchBar.subviews[0].subviews.last as! UITextField
@@ -122,10 +85,9 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
     }
     
     
-    
     func getData(){
         viewModel.loadSettingsSubject.onNext(true)
-        viewModel.getWeatherDataSubject.onNext(placeCoordinates)
+        viewModel.getWeatherDataSubject.onNext(viewModel.lastPlaceCoordinates)
     }
     
     func setupScreenData(){
@@ -177,6 +139,7 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
                 guard let enumCase = enumCase.element else { return }
                 self.screenView.setupScreen(enumCase: enumCase)
                 self.setupScreenData()
+                self.screenView.placeLabel.text = self.viewModel.lastPlaceName
             }.disposed(by: disposeBag)
         
         viewModel.settingsLoadedSubject
@@ -200,6 +163,13 @@ class MainScreenViewController: UIViewController, CLLocationManagerDelegate{
                     self.loader.removeFromParent()
                 }
             }.disposed(by: disposeBag)
+        
+        viewModel.locationLoadedSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe(onNext: {[unowned self] (string) in
+                self.screenView.placeLabel.text = string
+            }).disposed(by: disposeBag)
     }
     
     

@@ -57,9 +57,9 @@ extension MainScreenCoordinator: ParentCoordinatorDelegate, CoordinatorDelegate,
     func loadPlace(place: Place) {
         guard let longitude = Double(place.lng) else { return }
         guard let lattitude = Double(place.lat) else { return }
-        viewController.placeCoordinates = [longitude, lattitude]
+        viewModel.lastPlaceCoordinates = [longitude, lattitude]
         viewController.getData()
-        viewController.screenView.placeLabel.text = place.name
+        viewModel.lastPlaceName = place.name
     }
     
     func childHasFinished(coordinator: Coordinator) {

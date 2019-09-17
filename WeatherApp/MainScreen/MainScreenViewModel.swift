@@ -9,8 +9,11 @@
 import Foundation
 import RxSwift
 import RealmSwift
+import CoreLocation
 
-class MainScreenViewModel: MainScreenViewModelProtocol{
+
+class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewModelProtocol{
+    
     
     
     var weatherResponse: Weather?
@@ -23,7 +26,11 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
     var settings = SettingsData()
     let loadSettingsSubject = ReplaySubject<Bool>.create(bufferSize: 1)
     let settingsLoadedSubject = PublishSubject<Bool>()
-    
+    var lastPlaceCoordinates: [Double] = [18.6938889, 45.5511111]
+    var lastPlaceName: String = ""
+    let locationManager = CLLocationManager()
+    let locationLoadedSubject = PublishSubject<String>()
+    let loadLastLocationSubject = PublishSubject<Bool>()
     
     init(weatherRepository: WeatherRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
         self.weatherRepository = weatherRepository
@@ -45,6 +52,45 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
             }, onError: { (error) in
                 self.loaderSubject.onNext(false)
                 print(error)
+            })
+    }
+    
+    
+    func getLocation(){
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            guard let location: CLLocation = locationManager.location else { return }
+            lastPlaceCoordinates = [Double(location.coordinate.longitude), Double(location.coordinate.latitude)]
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location, completionHandler: {[unowned self](placemarks, error) in
+                self.locationLoadedSubject.onNext(placemarks?[0].locality ?? "")
+            })
+        }
+    }
+    
+    
+    func loadLastLocation(for subject: PublishSubject<Bool>) -> Disposable{
+        
+        return subject.flatMap({ (bool) -> Observable<Results<LastRealmLocation>> in
+            let lastLocation = self.database.getLastLocation()
+            return Observable.just(lastLocation)
+        })
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .map({ (realmLocation) -> ([Double], String) in
+                let coordinates: [Double] = [Double(realmLocation[0].lng) ?? 0, Double(realmLocation[0].lat) ?? 0, ]
+                let name = realmLocation[0].name
+                return (coordinates, name)
+            })
+            .subscribe(onNext: {[unowned self] (coordinates, name) in
+                if name != ""{
+                    self.lastPlaceName = name
+                    self.lastPlaceCoordinates = coordinates
+                }
+                self.getWeatherDataSubject.onNext(coordinates)
             })
     }
     
@@ -109,8 +155,6 @@ class MainScreenViewModel: MainScreenViewModelProtocol{
             return .tornado
         }
         return .clearDay
-        
-        
     }
     
     
