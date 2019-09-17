@@ -8,6 +8,7 @@ pod 'RealmSwift'
 pod 'RxSwift'
 pod 'RxCocoa'
 pod 'Hue'
+pod 'SwiftLocation'
 
 def testing_pods
     pod 'Quick'

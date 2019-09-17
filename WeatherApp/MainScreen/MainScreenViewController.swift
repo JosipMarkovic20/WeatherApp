@@ -10,8 +10,9 @@ import Foundation
 import UIKit
 import RxSwift
 import Hue
+import CoreLocation
 
-class MainScreenViewController: UIViewController, UISearchBarDelegate{
+class MainScreenViewController: UIViewController, UISearchBarDelegate, CLLocationManagerDelegate{
     
     let bodyImage: UIImageView = {
         let imageView = UIImageView()
@@ -218,6 +219,7 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     var openSettingsScreen: () -> Void = {}
     var placeCoordinates: [Double] = [18.6938889,45.5511111]
     var unitsType: UnitsTypeEnum = .metric
+    let locationManager = CLLocationManager()
     
     init(viewModel: MainScreenViewModel){
         self.viewModel = viewModel
@@ -229,16 +231,40 @@ class MainScreenViewController: UIViewController, UISearchBarDelegate{
     }
     
     override func viewDidLoad() {
-        placeCoordinates = loadFromRealm()
         setupUI()
         toDispose()
+        getLocation()
         setupSubscriptions()
-        getData()
+        getData() 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         setupSearchBar()
     }
+    
+    func getLocation(){
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            guard let location: CLLocation = locationManager.location else {
+                placeCoordinates = loadFromRealm()
+                return }
+            print("locations = \(location.coordinate.latitude) \(location.coordinate.longitude)")
+            placeCoordinates = [location.coordinate.longitude, location.coordinate.latitude]
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location, completionHandler: {[unowned self](placemarks, error) in
+                print("\(String(describing: placemarks?[0].locality))")
+                self.placeLabel.text = placemarks?[0].locality
+            })
+        }else{
+           placeCoordinates = loadFromRealm()
+        }
+        
+    }
+    
+    
     
     func toDispose(){
         viewModel.loadSettings(for: viewModel.loadSettingsSubject).disposed(by: disposeBag)
