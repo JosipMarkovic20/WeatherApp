@@ -28,7 +28,7 @@ class MainScreenCoordinator: Coordinator{
     }
     
     func setupSearchOpening(){
-        self.viewController.openSearchScreen = {[unowned self] in
+        self.viewController.screenView.openSearchScreen = {[unowned self] in
             let coordinator = SearchScreenCoordinator(mainViewController: self.viewController)
             self.store(coordinator: coordinator)
             coordinator.viewController.coordinatorDelegate = self
@@ -59,7 +59,7 @@ extension MainScreenCoordinator: ParentCoordinatorDelegate, CoordinatorDelegate,
         guard let lattitude = Double(place.lat) else { return }
         viewController.placeCoordinates = [longitude, lattitude]
         viewController.getData()
-        viewController.placeLabel.text = place.name
+        viewController.screenView.placeLabel.text = place.name
     }
     
     func childHasFinished(coordinator: Coordinator) {
