@@ -215,6 +215,7 @@ extension MainScreenViewController: SettingsDelegate{
         
         unitsType = settings.unitsType
         screenView.setupScreen(enumCase: viewModel.checkIcon())
+        setupScreenData()
     }
     
 }

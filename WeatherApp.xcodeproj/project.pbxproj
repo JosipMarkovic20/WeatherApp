@@ -34,6 +34,7 @@
 		5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3E68F92327BB8600E727DE /* AppDelegate.swift */; };
 		5F3E69012327BB8600E727DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69002327BB8600E727DE /* Assets.xcassets */; };
 		5F3E69042327BB8600E727DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F3E69022327BB8600E727DE /* LaunchScreen.storyboard */; };
+		5F6E576B2330EE8000183A85 /* SettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E576A2330EE8000183A85 /* SettingsScreenView.swift */; };
 		5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */; };
 		5F9891802328D4F800D9EBD6 /* GradientColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98917F2328D4F800D9EBD6 /* GradientColors.swift */; };
 		5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891812328D69C00D9EBD6 /* GradientView.swift */; };
@@ -98,6 +99,7 @@
 		5F3E69052327BB8600E727DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F3E690A2327BB8600E727DE /* WeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F3E69102327BB8700E727DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5F6E576A2330EE8000183A85 /* SettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenView.swift; sourceTree = "<group>"; };
 		5F98917C2328C89300D9EBD6 /* LayoutSetupEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSetupEnum.swift; sourceTree = "<group>"; };
 		5F98917F2328D4F800D9EBD6 /* GradientColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientColors.swift; sourceTree = "<group>"; };
 		5F9891812328D69C00D9EBD6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 		5F0B25C42327C0E2005B9BA3 /* SettingsScreen */ = {
 			isa = PBXGroup;
 			children = (
+				5F6E57692330EE4B00183A85 /* SettingsScreenView */,
 				5FBA61F9232F579800122C86 /* SettingsScreenHeader */,
 				5FBA61F6232F54D600122C86 /* SettingsScreenCell */,
 				5F0B25EE2327C2CD005B9BA3 /* SettingsScreenViewController.swift */,
@@ -323,6 +326,14 @@
 				5F0B25BC2327C082005B9BA3 /* WeatherAppTests-Bridging-Header.h */,
 			);
 			path = WeatherAppTests;
+			sourceTree = "<group>";
+		};
+		5F6E57692330EE4B00183A85 /* SettingsScreenView */ = {
+			isa = PBXGroup;
+			children = (
+				5F6E576A2330EE8000183A85 /* SettingsScreenView.swift */,
+			);
+			path = SettingsScreenView;
 			sourceTree = "<group>";
 		};
 		5F98917E2328D4E200D9EBD6 /* Helpers */ = {
@@ -586,6 +597,7 @@
 				5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
 				5FC3181E2330A7E400F00854 /* DeleteLocationDelegate.swift in Sources */,
+				5F6E576B2330EE8000183A85 /* SettingsScreenView.swift in Sources */,
 				5F02217A2330C6060077E909 /* MainScreenView.swift in Sources */,
 				5F0B25D92327C1FD005B9BA3 /* RealmLocation.swift in Sources */,
 				5FC2B0D2232B8F8E0045DDEE /* SearchScreenCollectionCell.swift in Sources */,
