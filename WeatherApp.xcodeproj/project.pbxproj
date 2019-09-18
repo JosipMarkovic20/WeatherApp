@@ -41,7 +41,9 @@
 		5F9891862328DAFB00D9EBD6 /* Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891852328DAED00D9EBD6 /* Book.otf */; };
 		5F9891872328DAFD00D9EBD6 /* Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5F9891842328DAE800D9EBD6 /* Light.otf */; };
 		5F9891892328E68E00D9EBD6 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9891882328E68E00D9EBD6 /* Loader.swift */; };
-		5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* Extensions.swift */; };
+		5F98918B232909B000D9EBD6 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F98918A232909B000D9EBD6 /* DoubleExtension.swift */; };
+		5FA43D6B2331F4DF00004142 /* RealmSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA43D6A2331F4DF00004142 /* RealmSettings.swift */; };
+		5FA43D712331FD1900004142 /* RealmLastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA43D702331FD1900004142 /* RealmLastLocation.swift */; };
 		5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */; };
 		5FBA61FB232F57B200122C86 /* SettingsScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */; };
 		5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA61FC232F7DB600122C86 /* SettingsData.swift */; };
@@ -106,7 +108,9 @@
 		5F9891842328DAE800D9EBD6 /* Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Light.otf; sourceTree = "<group>"; };
 		5F9891852328DAED00D9EBD6 /* Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Book.otf; sourceTree = "<group>"; };
 		5F9891882328E68E00D9EBD6 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
-		5F98918A232909B000D9EBD6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5F98918A232909B000D9EBD6 /* DoubleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
+		5FA43D6A2331F4DF00004142 /* RealmSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSettings.swift; sourceTree = "<group>"; };
+		5FA43D702331FD1900004142 /* RealmLastLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmLastLocation.swift; path = ../../../../../.Trash/RealmLastLocation.swift; sourceTree = "<group>"; };
 		5FBA61F7232F54F700122C86 /* SettingsScreenTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenTableCell.swift; sourceTree = "<group>"; };
 		5FBA61FA232F57B200122C86 /* SettingsScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenHeader.swift; sourceTree = "<group>"; };
 		5FBA61FC232F7DB600122C86 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
@@ -171,47 +175,41 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		5F0B25C42327C0E2005B9BA3 /* SettingsScreen */ = {
+		5F0B25C42327C0E2005B9BA3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				5F6E57692330EE4B00183A85 /* SettingsScreenView */,
-				5FBA61F9232F579800122C86 /* SettingsScreenHeader */,
-				5FBA61F6232F54D600122C86 /* SettingsScreenCell */,
-				5F0B25EE2327C2CD005B9BA3 /* SettingsScreenViewController.swift */,
-				5F0B25F02327C2DB005B9BA3 /* SettingsScreenViewModel.swift */,
-				5F0B25F22327C2ED005B9BA3 /* SettingsScreenCoordinator.swift */,
+				5FA43D632331F2DE00004142 /* UI */,
+				5FA43D642331F2E300004142 /* ViewModel */,
+				5FA43D652331F2EA00004142 /* Coordinator */,
 			);
-			path = SettingsScreen;
+			path = Settings;
 			sourceTree = "<group>";
 		};
-		5F0B25C52327C0E4005B9BA3 /* SearchScreen */ = {
+		5F0B25C52327C0E4005B9BA3 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				5FC2B0D0232B8F780045DDEE /* SearchScreenCell */,
-				5F0B25E82327C29F005B9BA3 /* SearchScreenViewController.swift */,
-				5F0B25EA2327C2AB005B9BA3 /* SearchScreenViewModel.swift */,
-				5F0B25EC2327C2BC005B9BA3 /* SearchScreenCoordinator.swift */,
+				5FA43D602331F2B600004142 /* UI */,
+				5FA43D612331F2BC00004142 /* ViewModel */,
+				5FA43D622331F2C300004142 /* Coordinator */,
 			);
-			path = SearchScreen;
+			path = Search;
 			sourceTree = "<group>";
 		};
-		5F0B25C62327C0E6005B9BA3 /* MainScreen */ = {
+		5F0B25C62327C0E6005B9BA3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				5F0221782330C5F60077E909 /* Views */,
-				5F0B25E12327C26B005B9BA3 /* MainScreenViewController.swift */,
-				5F0B25E32327C279005B9BA3 /* MainScreenViewModel.swift */,
-				5F0B25E52327C288005B9BA3 /* MainScreenCoordinator.swift */,
+				5FA43D5D2331F28300004142 /* UI */,
+				5FA43D5E2331F28A00004142 /* ViewModel */,
+				5FA43D5F2331F29400004142 /* Coordinator */,
 			);
-			path = MainScreen;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		5F0B25C72327C0E8005B9BA3 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				5F0B25DA2327C21F005B9BA3 /* AlamofireManager.swift */,
-				5F0B25DC2327C22B005B9BA3 /* WeatherRepository.swift */,
-				5F0B25DE2327C253005B9BA3 /* PlaceNameRepository.swift */,
+				5FA43D672331F36F00004142 /* Managers */,
+				5FA43D662331F35700004142 /* Repos */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -219,8 +217,8 @@
 		5F0B25C82327C0EA005B9BA3 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				5F0B25D72327C1E4005B9BA3 /* RealmDataModel */,
-				5F0B25D52327C1E0005B9BA3 /* RealmManager.swift */,
+				5FA43D682331F37F00004142 /* Managers */,
+				5F0B25D72327C1E4005B9BA3 /* RealmDataModels */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -265,12 +263,14 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		5F0B25D72327C1E4005B9BA3 /* RealmDataModel */ = {
+		5F0B25D72327C1E4005B9BA3 /* RealmDataModels */ = {
 			isa = PBXGroup;
 			children = (
 				5F0B25D82327C1FD005B9BA3 /* RealmLocation.swift */,
+				5FA43D6A2331F4DF00004142 /* RealmSettings.swift */,
+				5FA43D702331FD1900004142 /* RealmLastLocation.swift */,
 			);
-			path = RealmDataModel;
+			path = RealmDataModels;
 			sourceTree = "<group>";
 		};
 		5F3E68ED2327BB8500E727DE = {
@@ -304,9 +304,9 @@
 				5F0B25C92327C0EC005B9BA3 /* DataModels */,
 				5F0B25C82327C0EA005B9BA3 /* Persistence */,
 				5F0B25C72327C0E8005B9BA3 /* Networking */,
-				5F0B25C62327C0E6005B9BA3 /* MainScreen */,
-				5F0B25C52327C0E4005B9BA3 /* SearchScreen */,
-				5F0B25C42327C0E2005B9BA3 /* SettingsScreen */,
+				5F0B25C62327C0E6005B9BA3 /* Main */,
+				5F0B25C52327C0E4005B9BA3 /* Search */,
+				5F0B25C42327C0E2005B9BA3 /* Settings */,
 				5F3E69002327BB8600E727DE /* Assets.xcassets */,
 				5F3E69022327BB8600E727DE /* LaunchScreen.storyboard */,
 				5F3E69052327BB8600E727DE /* Info.plist */,
@@ -339,10 +339,10 @@
 		5F98917E2328D4E200D9EBD6 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				5FA43D692331F43100004142 /* Extensions */,
 				5F98917F2328D4F800D9EBD6 /* GradientColors.swift */,
 				5F9891812328D69C00D9EBD6 /* GradientView.swift */,
 				5F9891882328E68E00D9EBD6 /* Loader.swift */,
-				5F98918A232909B000D9EBD6 /* Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -354,6 +354,116 @@
 				5F9891842328DAE800D9EBD6 /* Light.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		5FA43D5D2331F28300004142 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5F0221782330C5F60077E909 /* Views */,
+				5F0B25E12327C26B005B9BA3 /* MainScreenViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FA43D5E2331F28A00004142 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25E32327C279005B9BA3 /* MainScreenViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5FA43D5F2331F29400004142 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25E52327C288005B9BA3 /* MainScreenCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		5FA43D602331F2B600004142 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5FC2B0D0232B8F780045DDEE /* SearchScreenCell */,
+				5F0B25E82327C29F005B9BA3 /* SearchScreenViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FA43D612331F2BC00004142 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25EA2327C2AB005B9BA3 /* SearchScreenViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5FA43D622331F2C300004142 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25EC2327C2BC005B9BA3 /* SearchScreenCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		5FA43D632331F2DE00004142 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA61F6232F54D600122C86 /* SettingsScreenCell */,
+				5FBA61F9232F579800122C86 /* SettingsScreenHeader */,
+				5F6E57692330EE4B00183A85 /* SettingsScreenView */,
+				5F0B25EE2327C2CD005B9BA3 /* SettingsScreenViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FA43D642331F2E300004142 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25F02327C2DB005B9BA3 /* SettingsScreenViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5FA43D652331F2EA00004142 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25F22327C2ED005B9BA3 /* SettingsScreenCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		5FA43D662331F35700004142 /* Repos */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25DE2327C253005B9BA3 /* PlaceNameRepository.swift */,
+				5F0B25DC2327C22B005B9BA3 /* WeatherRepository.swift */,
+			);
+			path = Repos;
+			sourceTree = "<group>";
+		};
+		5FA43D672331F36F00004142 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25DA2327C21F005B9BA3 /* AlamofireManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		5FA43D682331F37F00004142 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				5F0B25D52327C1E0005B9BA3 /* RealmManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		5FA43D692331F43100004142 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5F98918A232909B000D9EBD6 /* DoubleExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5FBA61F6232F54D600122C86 /* SettingsScreenCell */ = {
@@ -516,8 +626,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/WeatherApp/Networking/WeatherRepository.swift",
-				"$(SRCROOT)/WeatherApp/Networking/PlaceNameRepository.swift",
+				"$(SRCROOT)/WeatherApp/Networking/Repos/WeatherRepository.swift",
+				"$(SRCROOT)/WeatherApp/Networking/Repos/PlaceNameRepository.swift",
 			);
 			name = "Generate Mocks";
 			outputFileListPaths = (
@@ -596,6 +706,7 @@
 				5F9891822328D69C00D9EBD6 /* GradientView.swift in Sources */,
 				5FBA61FD232F7DB600122C86 /* SettingsData.swift in Sources */,
 				5F0B25DD2327C22B005B9BA3 /* WeatherRepository.swift in Sources */,
+				5FA43D6B2331F4DF00004142 /* RealmSettings.swift in Sources */,
 				5FC3181E2330A7E400F00854 /* DeleteLocationDelegate.swift in Sources */,
 				5F6E576B2330EE8000183A85 /* SettingsScreenView.swift in Sources */,
 				5F02217A2330C6060077E909 /* MainScreenView.swift in Sources */,
@@ -615,11 +726,12 @@
 				5F9891892328E68E00D9EBD6 /* Loader.swift in Sources */,
 				5F0B25E22327C26B005B9BA3 /* MainScreenViewController.swift in Sources */,
 				5F0B25EF2327C2CD005B9BA3 /* SettingsScreenViewController.swift in Sources */,
+				5FA43D712331FD1900004142 /* RealmLastLocation.swift in Sources */,
 				5F0B25E92327C29F005B9BA3 /* SearchScreenViewController.swift in Sources */,
 				5F3E68FA2327BB8600E727DE /* AppDelegate.swift in Sources */,
 				5FC2B0D4232BA9960045DDEE /* LoadPlaceDataDelegate.swift in Sources */,
 				5F0B25F12327C2DB005B9BA3 /* SettingsScreenViewModel.swift in Sources */,
-				5F98918B232909B000D9EBD6 /* Extensions.swift in Sources */,
+				5F98918B232909B000D9EBD6 /* DoubleExtension.swift in Sources */,
 				5F98917D2328C89300D9EBD6 /* LayoutSetupEnum.swift in Sources */,
 				5F0B25E62327C288005B9BA3 /* MainScreenCoordinator.swift in Sources */,
 				5FBA61F8232F54F700122C86 /* SettingsScreenTableCell.swift in Sources */,

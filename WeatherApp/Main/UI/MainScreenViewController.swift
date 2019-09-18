@@ -15,7 +15,6 @@ import Hue
 class MainScreenViewController: UIViewController{
     
     
-    
     let disposeBag = DisposeBag()
     let viewModel: MainScreenViewModel
     let loader = LoaderViewController()
@@ -35,7 +34,6 @@ class MainScreenViewController: UIViewController{
     override func viewDidLoad() {
         toDispose()
         setupSubscriptions()
-//        viewModel.loadLastLocationSubject.onNext(true)
         viewModel.getLocation()
         setupUI()
     }
@@ -131,28 +129,39 @@ class MainScreenViewController: UIViewController{
         self.openSettingsScreen()
     }
     
+    func showPopUp(){
+        let alert = UIAlertController(title: "Error", message: "Something went wrong.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true)
+    }
+    
     func setupSubscriptions(){
+        
         viewModel.setupScreenSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(viewModel.subscribeScheduler)
-            .subscribe {[unowned self] (enumCase) in
-                guard let enumCase = enumCase.element else { return }
+            .subscribeOn(viewModel.subscribeScheduler).subscribe(onNext: { [unowned self] (enumCase) in
                 self.screenView.setupScreen(enumCase: enumCase)
                 self.setupScreenData()
                 self.screenView.placeLabel.text = self.viewModel.lastPlaceName
-            }.disposed(by: disposeBag)
+                }, onError: { (error) in
+                    print("Error setting up screen ", error)
+            }).disposed(by: disposeBag)
         
         viewModel.settingsLoadedSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(viewModel.subscribeScheduler).subscribe(onNext: {[unowned self] (bool) in
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe(onNext: {[unowned self] (bool) in
                 self.setupBasedOnSettings(settings: self.viewModel.settings)
+                }, onError: { (error) in
+                    print("Error loading settings ", error)
             }).disposed(by: disposeBag)
         
         viewModel.loaderSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(viewModel.subscribeScheduler)
-            .subscribe {[unowned self] (bool) in
-                if bool.element ?? false{
+            .subscribeOn(viewModel.subscribeScheduler).subscribe(onNext: { [unowned self] (bool) in
+                if bool{
                     self.addChild(self.loader)
                     self.loader.view.frame = self.view.frame
                     self.view.addSubview(self.loader.view)
@@ -162,13 +171,27 @@ class MainScreenViewController: UIViewController{
                     self.loader.view.removeFromSuperview()
                     self.loader.removeFromParent()
                 }
-            }.disposed(by: disposeBag)
+                }, onError: { (error) in
+                    print("Error displaying loader ", error)
+            }).disposed(by: disposeBag)
+        
         
         viewModel.locationLoadedSubject
             .observeOn(MainScheduler.instance)
             .subscribeOn(viewModel.subscribeScheduler)
             .subscribe(onNext: {[unowned self] (string) in
                 self.screenView.placeLabel.text = string
+                }, onError: { (error) in
+                    print("Error loading location ", error)
+            }).disposed(by: disposeBag)
+        
+        viewModel.popUpSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.showPopUp()
+                }, onError: { (error) in
+                    print("Error displaying popUp ", error)
             }).disposed(by: disposeBag)
     }
     

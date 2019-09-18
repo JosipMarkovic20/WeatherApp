@@ -25,5 +25,5 @@ struct GradientColors{
     
     let fogColorTop = UIColor(hex: "#ABD6E9")
     let fogColorBottom = UIColor(hex: "#D8D8D8")
- 
+    
 }

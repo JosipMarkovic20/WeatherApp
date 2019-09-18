@@ -366,50 +366,50 @@ class MainScreenView: UIView, UISearchBarDelegate{
         setupMinAndMax()
         setupStats()
     }
-      
-        func setupMinAndMax(){
-            divider.heightAnchor.constraint(equalToConstant: 60).isActive = true
-            divider.centerXAnchor.constraint(equalTo: minAndMaxTemp.centerXAnchor).isActive = true
-            divider.centerYAnchor.constraint(equalTo: minAndMaxTemp.centerYAnchor).isActive = true
-            divider.widthAnchor.constraint(equalToConstant: 3).isActive = true
-            
-            minTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
-            minTempLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
-            minTempLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
-            
-            minLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
-            minLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
-            minLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
-            
-            maxTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
-            maxTempLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
-            maxTempLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
-            
-            maxLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
-            maxLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
-            maxLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
-            
-        }
+    
+    func setupMinAndMax(){
+        divider.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        divider.centerXAnchor.constraint(equalTo: minAndMaxTemp.centerXAnchor).isActive = true
+        divider.centerYAnchor.constraint(equalTo: minAndMaxTemp.centerYAnchor).isActive = true
+        divider.widthAnchor.constraint(equalToConstant: 3).isActive = true
         
+        minTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
+        minTempLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
+        minTempLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
         
-        func setupStats(){
-            wind.topAnchor.constraint(equalTo: windView.topAnchor).isActive = true
-            wind.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
-            
-            windLabel.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
-            windLabel.bottomAnchor.constraint(equalTo: windView.bottomAnchor).isActive = true
-            
-            humidity.topAnchor.constraint(equalTo: humidityView.topAnchor).isActive = true
-            humidity.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
-            
-            humidityLabel.bottomAnchor.constraint(equalTo: humidityView.bottomAnchor).isActive = true
-            humidityLabel.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
-            
-            pressure.topAnchor.constraint(equalTo: pressureView.topAnchor).isActive = true
-            pressure.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
-            
-            pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
-            pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
-            
-        }
+        minLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
+        minLabel.trailingAnchor.constraint(equalTo: divider.leadingAnchor).isActive = true
+        minLabel.leadingAnchor.constraint(equalTo: minAndMaxTemp.leadingAnchor).isActive = true
+        
+        maxTempLabel.topAnchor.constraint(equalTo: minAndMaxTemp.topAnchor, constant: 5).isActive = true
+        maxTempLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
+        maxTempLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
+        
+        maxLabel.bottomAnchor.constraint(equalTo: minAndMaxTemp.bottomAnchor, constant: -5).isActive = true
+        maxLabel.leadingAnchor.constraint(equalTo: divider.trailingAnchor).isActive = true
+        maxLabel.trailingAnchor.constraint(equalTo: minAndMaxTemp.trailingAnchor).isActive = true
+        
+    }
+    
+    
+    func setupStats(){
+        wind.topAnchor.constraint(equalTo: windView.topAnchor).isActive = true
+        wind.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
+        
+        windLabel.centerXAnchor.constraint(equalTo: windView.centerXAnchor).isActive = true
+        windLabel.bottomAnchor.constraint(equalTo: windView.bottomAnchor).isActive = true
+        
+        humidity.topAnchor.constraint(equalTo: humidityView.topAnchor).isActive = true
+        humidity.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
+        
+        humidityLabel.bottomAnchor.constraint(equalTo: humidityView.bottomAnchor).isActive = true
+        humidityLabel.centerXAnchor.constraint(equalTo: humidityView.centerXAnchor).isActive = true
+        
+        pressure.topAnchor.constraint(equalTo: pressureView.topAnchor).isActive = true
+        pressure.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
+        
+        pressureLabel.bottomAnchor.constraint(equalTo: pressureView.bottomAnchor).isActive = true
+        pressureLabel.centerXAnchor.constraint(equalTo: pressureView.centerXAnchor).isActive = true
+        
+    }
 }

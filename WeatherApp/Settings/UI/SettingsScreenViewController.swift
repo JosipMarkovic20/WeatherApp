@@ -149,30 +149,52 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
+    func showPopUp(){
+        let alert = UIAlertController(title: "Error", message: "Something went wrong.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true)
+    }
+    
     func setupSubscriptions(){
         
         viewModel.settingsLoadedSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(viewModel.subscribeScheduler)
             .subscribe(onNext: {[unowned self] (bool) in
                 self.setupSettings()
                 print(self.viewModel.database.deleteSettings())
+                }, onError: { (error) in
+                    print("Error loading settings ", error)
             }).disposed(by: disposeBag)
         
         viewModel.tableReloadSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(viewModel.subscribeScheduler)
             .subscribe(onNext: {[unowned self] (bool) in
                 self.tableView.reloadData()
+                }, onError: { (error) in
+                    print("Erorr reloading tableView ", error)
             }).disposed(by: disposeBag)
         
         viewModel.locationsLoadedSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(viewModel.subscribeScheduler)
             .subscribe(onNext: {[unowned self] (bool) in
                 self.observeLocations()
+                }, onError: { (error) in
+                    print("Error loading locations", error)
             }).disposed(by: disposeBag)
         
+        viewModel.popUpSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.showPopUp()
+                }, onError: { (error) in
+                    print("Error displaying popUp ", error)
+            }).disposed(by: disposeBag)
     }
     
     func toDispose(){

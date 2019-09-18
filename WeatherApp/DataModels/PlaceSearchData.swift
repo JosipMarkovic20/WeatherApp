@@ -18,5 +18,4 @@ struct Place: Decodable{
     let lng: String
     let lat: String
     let geonameId: Int
-    let countryCode: String
 }

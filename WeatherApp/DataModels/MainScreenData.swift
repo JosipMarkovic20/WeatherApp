@@ -24,7 +24,6 @@ struct Currently: Decodable{
     let summary: String
 }
 
-
 struct Daily: Decodable{
     let data: [DailyData]
 }

@@ -19,6 +19,7 @@ class SearchScreenViewModel: SearchScreenProtocol{
     let tableReloadSubject = PublishSubject<Bool>()
     let database = RealmManager()
     let saveLocationSubject = PublishSubject<Place>()
+    let popUpSubject = PublishSubject<Bool>()
     
     init(placeRepository: PlaceNameRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
         self.placeRepository = placeRepository
@@ -26,15 +27,20 @@ class SearchScreenViewModel: SearchScreenProtocol{
     }
     
     func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable {
-        return subject.flatMap({ (query) -> Observable<PlaceData> in
+        return subject.flatMap({[unowned self] (query) -> Observable<PlaceData> in
             return self.placeRepository.getPlace(name: query)
         })
-            .map({ (placeData) -> [Place] in
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(subscribeScheduler)
+            .map({[unowned self] (placeData) -> [Place] in
                 self.placeResponse.removeAll()
                 return placeData.geonames
-            }).subscribe(onNext: { (places) in
+            }).subscribe(onNext: {[unowned self] (places) in
                 self.placeResponse = places
                 self.tableReloadSubject.onNext(true)
+            }, onError: {[unowned self] (error) in
+                self.popUpSubject.onNext(true)
+                print(error)
             })
     }
     
@@ -52,10 +58,13 @@ class SearchScreenViewModel: SearchScreenProtocol{
             .subscribeOn(subscribeScheduler)
             .subscribe(onNext: { (string) in
                 print(string)
+            }, onError: {[unowned self] (error) in
+                self.popUpSubject.onNext(true)
+                print(error)
             })
     }
     
-
+    
 }
 
 

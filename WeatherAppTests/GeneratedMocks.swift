@@ -1,4 +1,4 @@
-// MARK: - Mocks generated from file: WeatherApp/Networking/PlaceNameRepository.swift at 2019-09-17 07:41:12 +0000
+// MARK: - Mocks generated from file: WeatherApp/Networking/Repos/PlaceNameRepository.swift at 2019-09-18 06:26:33 +0000
 
 //
 //  PlaceNameRepository.swift
@@ -105,7 +105,7 @@ import RxSwift
 }
 
 
-// MARK: - Mocks generated from file: WeatherApp/Networking/WeatherRepository.swift at 2019-09-17 07:41:12 +0000
+// MARK: - Mocks generated from file: WeatherApp/Networking/Repos/WeatherRepository.swift at 2019-09-18 06:26:33 +0000
 
 //
 //  WeatherRepository.swift

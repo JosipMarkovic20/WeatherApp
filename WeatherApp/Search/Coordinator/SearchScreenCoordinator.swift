@@ -1,5 +1,5 @@
 //
-//  SettingsScreenCoordinator.swift
+//  SearchScreenCoordinator.swift
 //  WeatherApp
 //
 //  Created by Josip Marković on 10/09/2019.
@@ -10,16 +10,18 @@ import Foundation
 import UIKit
 
 
-class SettingsScreenCoordinator: Coordinator{
+
+
+class SearchScreenCoordinator: Coordinator{
     
     var childCoordinators: [Coordinator] = []
-    let viewModel: SettingsScreenViewModel
-    let viewController: SettingsScreenViewController
+    let viewModel: SearchScreenViewModel
+    let viewController: SearchScreenViewController
     let mainViewController: MainScreenViewController
     
     init(mainViewController: MainScreenViewController){
-        self.viewModel = SettingsScreenViewModel()
-        self.viewController = SettingsScreenViewController(viewModel: viewModel)
+        self.viewModel = SearchScreenViewModel(placeRepository: PlaceNameRepository())
+        self.viewController = SearchScreenViewController(viewModel: viewModel)
         self.mainViewController = mainViewController
     }
     
@@ -30,7 +32,8 @@ class SettingsScreenCoordinator: Coordinator{
     
     func start() {
         viewController.modalPresentationStyle = .overCurrentContext
-        mainViewController.present(viewController, animated: true)
+        mainViewController.present(viewController, animated: false)
     }
-
 }
+
+

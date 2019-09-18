@@ -23,7 +23,8 @@ class SettingsScreenViewModel{
     let tableReloadSubject = PublishSubject<Bool>()
     let deleteLocationSubject = PublishSubject<Int>()
     let locationsLoadedSubject = PublishSubject<Bool>()
-
+    let popUpSubject = PublishSubject<Bool>()
+    
     
     init(subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)) {
         self.subscribeScheduler = subscribeScheduler
@@ -35,13 +36,16 @@ class SettingsScreenViewModel{
             let settings = self.database.getSettings()
             return Observable.just(settings)
         })
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(subscribeScheduler)
             .observeOn(MainScheduler.instance)
             .map({[unowned self] (results) -> SettingsData in
                 return self.createSettingsObject(results: results)
             }).subscribe(onNext: {[unowned self] (settings) in
                 self.settings = settings
                 self.settingsLoadedSubject.onNext(true)
+                }, onError: {[unowned self] (error) in
+                    self.popUpSubject.onNext(true)
+                    print(error)
             })
     }
     
@@ -51,7 +55,7 @@ class SettingsScreenViewModel{
             let locations = self.database.getLocations()
             return Observable.just(locations)
         })
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(subscribeScheduler)
             .observeOn(MainScheduler.instance)
             .map({(results) -> Results<RealmLocation> in
                 return results
@@ -60,13 +64,16 @@ class SettingsScreenViewModel{
                 self.locations = locations
                 self.tableReloadSubject.onNext(true)
                 self.locationsLoadedSubject.onNext(true)
+                }, onError: {[unowned self] (error) in
+                    self.popUpSubject.onNext(true)
+                    print(error)
             })
     }
     
     func createLocationsArray(results: Results<RealmLocation>) -> [Place]{
         var locations: [Place] = []
         for location in results{
-            let place = Place(name: location.name, lng: location.lng, lat: location.lat, geonameId: location.geonameId, countryCode: location.countryCode)
+            let place = Place(name: location.name, lng: location.lng, lat: location.lat, geonameId: location.geonameId)
             locations.append(place)
         }
         return locations
@@ -75,13 +82,16 @@ class SettingsScreenViewModel{
     func deleteLocation(for subject: PublishSubject<Int>) -> Disposable{
         
         return subject
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(subscribeScheduler)
             .observeOn(MainScheduler.instance)
             .map({[unowned self] (place) -> Observable<String> in
                 let result = self.database.deleteLocation(geonameId: place)
                 return result
             }).subscribe(onNext: { (string) in
                 print(string)
+            }, onError: {[unowned self] (error) in
+                self.popUpSubject.onNext(true)
+                print(error)
             })
     }
     
@@ -99,8 +109,4 @@ class SettingsScreenViewModel{
         }
         return settingsData
     }
-    
-    
-    
-    
 }

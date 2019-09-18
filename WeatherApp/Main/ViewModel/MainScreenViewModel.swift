@@ -15,7 +15,6 @@ import CoreLocation
 class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewModelProtocol{
     
     
-    
     var weatherResponse: Weather?
     var weatherRepository: WeatherRepository
     var subscribeScheduler: SchedulerType
@@ -31,6 +30,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     let locationManager = CLLocationManager()
     let locationLoadedSubject = PublishSubject<String>()
     let loadLastLocationSubject = PublishSubject<Bool>()
+    let popUpSubject = PublishSubject<Bool>()
     
     init(weatherRepository: WeatherRepository, subscribeScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(qos: .background)){
         self.weatherRepository = weatherRepository
@@ -49,9 +49,10 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
                 self.weatherResponse = weather
                 self.loaderSubject.onNext(false)
                 self.setupScreenSubject.onNext(self.checkIcon())
-            }, onError: { (error) in
-                self.loaderSubject.onNext(false)
-                print(error)
+                }, onError: {[unowned self] (error) in
+                    self.loaderSubject.onNext(false)
+                    self.popUpSubject.onNext(true)
+                    print(error)
             })
     }
     
@@ -80,11 +81,11 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     
     func loadLastLocation(for subject: PublishSubject<Bool>) -> Disposable{
         
-        return subject.flatMap({ (bool) -> Observable<Results<LastRealmLocation>> in
+        return subject.flatMap({[unowned self] (bool) -> Observable<Results<LastRealmLocation>> in
             let lastLocation = self.database.getLastLocation()
             return Observable.just(lastLocation)
         })
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(subscribeScheduler)
             .observeOn(MainScheduler.instance)
             .map({ (realmLocation) -> ([Double], String) in
                 if !realmLocation.isEmpty{
@@ -100,6 +101,9 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
                     self.lastPlaceCoordinates = coordinates
                 }
                 self.getWeatherDataSubject.onNext(self.lastPlaceCoordinates)
+                }, onError: {[unowned self] (error) in
+                    self.popUpSubject.onNext(true)
+                    print(error)
             })
     }
     
@@ -109,13 +113,16 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
             let settings = self.database.getSettings()
             return Observable.just(settings)
         })
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(subscribeScheduler)
             .observeOn(MainScheduler.instance)
             .map({[unowned self] (results) -> SettingsData in
                 return self.createSettingsObject(results: results)
             }).subscribe(onNext: {[unowned self] (settings) in
                 self.settings = settings
                 self.settingsLoadedSubject.onNext(true)
+                }, onError: {[unowned self] (error) in
+                    self.popUpSubject.onNext(true)
+                    print(error)
             })
     }
     
@@ -181,7 +188,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
         }
         return (0,0)
     }
- 
+    
     
     func convertUnixTimeToDate(unixTime: Int) -> String{
         let date = Date(timeIntervalSince1970: Double(unixTime))

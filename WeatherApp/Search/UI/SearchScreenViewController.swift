@@ -72,7 +72,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         viewModel.saveLocation(for: viewModel.saveLocationSubject).disposed(by: disposeBag)
         viewModel.collectAndPrepareData(for: viewModel.getPlaceDataSubject).disposed(by: disposeBag)
     }
-
+    
     func setupUI(){
         setupCollectionView()
         view.backgroundColor = .clear
@@ -156,7 +156,7 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.placeResponse.count
@@ -182,6 +182,14 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
         self.dismiss(animated: true, completion: nil)
     }
     
+    func showPopUp(){
+        let alert = UIAlertController(title: "Error", message: "Something went wrong.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true)
+    }
+    
     func setupSubscription(){
         @discardableResult let _ = searchBar.rx.text.orEmpty
             .distinctUntilChanged()
@@ -192,15 +200,26 @@ class SearchScreenViewController: UIViewController, UISearchBarDelegate, UIColle
             .map({ (index, value) -> String in
                 return value
             })
-            .debounce(.milliseconds(300), scheduler: ConcurrentDispatchQueueScheduler(qos: .background))
+            .debounce(.milliseconds(300), scheduler: viewModel.subscribeScheduler)
             .bind(to: viewModel.getPlaceDataSubject)
         
         
         viewModel.tableReloadSubject
             .observeOn(MainScheduler.instance)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .subscribeOn(viewModel.subscribeScheduler)
             .subscribe(onNext: {[unowned self] (bool) in
                 self.collectionView.reloadData()
+                }, onError: { (error) in
+                    print("Error reloading tableView ", error)
+            }).disposed(by: disposeBag)
+        
+        viewModel.popUpSubject
+            .observeOn(MainScheduler.instance)
+            .subscribeOn(viewModel.subscribeScheduler)
+            .subscribe(onNext: {[unowned self] (bool) in
+                self.showPopUp()
+                }, onError: { (error) in
+                    print("Error displaying popUp", error)
             }).disposed(by: disposeBag)
     }
 }
