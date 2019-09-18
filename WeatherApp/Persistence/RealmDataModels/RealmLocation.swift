@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-
+//Class that defines all parameters we want to store to realm for location object
 class RealmLocation: Object{
     @objc dynamic var name: String = ""
     @objc dynamic var lng: String = ""

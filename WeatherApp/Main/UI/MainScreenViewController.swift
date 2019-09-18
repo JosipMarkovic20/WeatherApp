@@ -63,7 +63,7 @@ class MainScreenViewController: UIViewController{
         viewModel.loadLastLocation(for: viewModel.loadLastLocationSubject).disposed(by: disposeBag)
     }
     
-    
+    //Setting all search bar properties
     func setupSearchBar(){
         let searchTextField:UITextField = screenView.searchBar.subviews[0].subviews.last as! UITextField
         searchTextField.textAlignment = NSTextAlignment.left
@@ -88,6 +88,7 @@ class MainScreenViewController: UIViewController{
         viewModel.getWeatherDataSubject.onNext(viewModel.lastPlaceCoordinates)
     }
     
+    //Setting shown screen data based on response
     func setupScreenData(){
         
         let temperature = viewModel.weatherResponse?.currently.temperature ?? 0
@@ -129,6 +130,7 @@ class MainScreenViewController: UIViewController{
         self.openSettingsScreen()
     }
     
+    //Displaying popUi in case of an error
     func showPopUp(){
         let alert = UIAlertController(title: "Error", message: "Something went wrong.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction) in
@@ -201,6 +203,7 @@ class MainScreenViewController: UIViewController{
 
 extension MainScreenViewController: SettingsDelegate{
     
+    //Setting screen units type and layout elements based on selected settings from settings screen
     func setupBasedOnSettings(settings: SettingsData) {
         screenView.windView.isHidden = settings.windIsHidden
         screenView.humidityView.isHidden = settings.humidityIsHidden

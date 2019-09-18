@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Enum that helps us choose type of units we want to display on screen
 enum UnitsTypeEnum {
     case metric
     case imperial

@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Delegate for loading place after it is selected either from search screen or settings screen
 protocol LoadPlaceDataDelegate: class {
     func loadPlace(place: Place)
 }

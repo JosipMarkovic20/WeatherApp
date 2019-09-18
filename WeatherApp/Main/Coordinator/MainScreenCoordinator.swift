@@ -27,6 +27,8 @@ class MainScreenCoordinator: Coordinator{
         setupSettingsOpening()
     }
     
+    
+    //Setting commands for opening search screen when search bar is clicked
     func setupSearchOpening(){
         self.viewController.screenView.openSearchScreen = {[unowned self] in
             let coordinator = SearchScreenCoordinator(mainViewController: self.viewController)
@@ -37,6 +39,7 @@ class MainScreenCoordinator: Coordinator{
         }
     }
     
+    //Setting commands for opening settings screen when settings icon is clicked
     func setupSettingsOpening(){
         self.viewController.openSettingsScreen = {[unowned self] in
             let coordinator = SettingsScreenCoordinator(mainViewController: self.viewController)

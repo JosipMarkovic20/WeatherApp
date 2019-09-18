@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Delegate for deleting location from database
 protocol DeleteLocationDelegate: class {
     func deleteLocation(geonameId: Int)
 }

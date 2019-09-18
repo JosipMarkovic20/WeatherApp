@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Structs for determining which data we want to parse from json response for weather
 struct Weather: Decodable{
     let currently: Currently
     let daily: Daily

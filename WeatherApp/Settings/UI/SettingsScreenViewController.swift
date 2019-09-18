@@ -203,6 +203,8 @@ class SettingsScreenViewController: UIViewController, UITableViewDelegate, UITab
         viewModel.deleteLocation(for: viewModel.deleteLocationSubject).disposed(by: disposeBag)
     }
     
+    
+    //Observing changes in realm and edits tableView accordingly
     func observeLocations(){
         guard let locations = viewModel.locations else { return }
         

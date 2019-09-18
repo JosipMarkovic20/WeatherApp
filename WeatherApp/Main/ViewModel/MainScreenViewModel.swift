@@ -37,7 +37,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
         self.subscribeScheduler = subscribeScheduler
     }
     
-    
+    //Fetching weather data based on coordinates that we send through replay subject as an array of doubles
     func collectAndPrepareData(for subject: ReplaySubject<[Double]>) -> Disposable{
         return subject.flatMap({[unowned self] (locationArray) -> Observable<Weather> in
             self.loaderSubject.onNext(true)
@@ -57,6 +57,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     }
     
     
+    //Getting location from CoreLocation, worked at first then started behaving strange, probably simulator issue
     func getLocation(){
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -79,6 +80,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     }
     
     
+    //Loading last location from realm
     func loadLastLocation(for subject: PublishSubject<Bool>) -> Disposable{
         
         return subject.flatMap({[unowned self] (bool) -> Observable<Results<LastRealmLocation>> in
@@ -107,6 +109,8 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
             })
     }
     
+    
+    //Loading settings from realm
     func loadSettings(for subject: ReplaySubject<Bool>) -> Disposable{
         
         return subject.flatMap({[unowned self] (bool) -> Observable<Results<RealmSettings>> in
@@ -126,6 +130,8 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
             })
     }
     
+    
+    //Creating settings object based on results from realm
     func createSettingsObject(results: Results<RealmSettings>) -> SettingsData{
         let settingsData = SettingsData()
         for settingsResult in results{
@@ -141,6 +147,8 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
         return settingsData
     }
     
+    
+    //Checking icon parameter from weather object and returning LayoutSetupEnum accordingly
     func checkIcon() -> LayoutSetupEnum{
         let currentIcon = weatherResponse?.currently.icon
         if currentIcon == "clear-day"{
@@ -174,6 +182,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
     }
     
     
+    //Function for finding min and max temperatures from array of daily objects, first we search through array and look at the dates from daily objects and currently object, when they have the same date we use that daily objects min and max temperature
     func findMinAndMaxTemperatures() -> (min: Double,max: Double){
         let currentTime = weatherResponse?.currently.time ?? 0
         guard let possibleTimes = weatherResponse?.daily.data else { return (0,0)}
@@ -189,7 +198,7 @@ class MainScreenViewModel: NSObject, CLLocationManagerDelegate, MainScreenViewMo
         return (0,0)
     }
     
-    
+    //Converts unix time for response to human readable date so we can compare dates
     func convertUnixTimeToDate(unixTime: Int) -> String{
         let date = Date(timeIntervalSince1970: Double(unixTime))
         let dateFormatter = DateFormatter()

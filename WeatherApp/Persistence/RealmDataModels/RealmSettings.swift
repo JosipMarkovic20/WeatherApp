@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 
+//Class that defines all parameters we want to store to realm for settings object
 class RealmSettings: Object{
     @objc dynamic var unitsType: String = "Metric"
     @objc dynamic var windIsHidden: Bool = false

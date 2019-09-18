@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 import RxSwift
 
+
+//Repository that contains routes for weather
 class WeatherRepository{
     
     let alamofire = AlamofireManager()

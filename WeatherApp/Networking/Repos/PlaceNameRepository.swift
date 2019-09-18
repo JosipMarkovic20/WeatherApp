@@ -10,6 +10,8 @@ import Foundation
 import Alamofire
 import RxSwift
 
+
+//Repository that contains routes for location
 class PlaceNameRepository{
     
     let alamofire = AlamofireManager()

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Hue
 
+//Strcut containig all colors required for creating gradients
 struct GradientColors{
     let dayColorTop = UIColor(hex: "#59B7E0")
     let dayColorBottom = UIColor(hex: "#D8D8D8")

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+//Custom view for main screen
 class MainScreenView: UIView, UISearchBarDelegate{
     
     let bodyImage: UIImageView = {

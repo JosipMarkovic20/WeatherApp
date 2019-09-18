@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Enum that helps us determine which assets we need to use for given screen
 enum LayoutSetupEnum {
     case clearDay
     case clearNight

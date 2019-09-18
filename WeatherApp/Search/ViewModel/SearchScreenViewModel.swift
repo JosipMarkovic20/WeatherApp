@@ -26,6 +26,7 @@ class SearchScreenViewModel: SearchScreenProtocol{
         self.subscribeScheduler = subscribeScheduler
     }
     
+    //Fetching and parsing response to locations array based on query when send through search bar
     func collectAndPrepareData(for subject: PublishSubject<String>) -> Disposable {
         return subject.flatMap({[unowned self] (query) -> Observable<PlaceData> in
             return self.placeRepository.getPlace(name: query)

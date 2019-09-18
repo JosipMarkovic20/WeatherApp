@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+
+//Class for creating loader which is shown while fetching data
 class LoaderViewController: UIViewController {
     var loader  = UIActivityIndicatorView(style: .whiteLarge)
     

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+//Class for creating background gradient
 class GradientView: UIView {
     
     var gradient: CAGradientLayer = [GradientColors().dayColorTop, GradientColors().dayColorBottom].gradient()

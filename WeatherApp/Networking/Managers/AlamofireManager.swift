@@ -13,6 +13,7 @@ import RxSwift
 class AlamofireManager{
     let jsonDecoder = JSONDecoder()
     
+    //Makes request for weather and parses json response
     func getWeatherAlamofireWay(jsonUrlString: String) -> Observable<Weather>{
         
         return Observable.create{observer in
@@ -36,6 +37,7 @@ class AlamofireManager{
     }
     
     
+    //Makes request for location and parses json response
     func getPlaceAlamofireWay(jsonUrlString: String) -> Observable<PlaceData>{
         let encodedString = jsonUrlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) ?? ""
         return Observable.create{observer in

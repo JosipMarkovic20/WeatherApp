@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Delegate for removing coordinates from memory
 protocol ParentCoordinatorDelegate {
     func childHasFinished(coordinator: Coordinator)
 }

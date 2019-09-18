@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Class for creating settings object
 class SettingsData{
     
     var unitsType: UnitsTypeEnum

@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Base coordinator class
 protocol Coordinator : class {
     var childCoordinators : [Coordinator] { get set }
     func start()

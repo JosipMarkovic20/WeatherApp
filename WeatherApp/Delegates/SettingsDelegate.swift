@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Delegate for setting up home screen based on settings we determined in settings screen
 protocol SettingsDelegate: class {
     func setupBasedOnSettings(settings: SettingsData)
 }

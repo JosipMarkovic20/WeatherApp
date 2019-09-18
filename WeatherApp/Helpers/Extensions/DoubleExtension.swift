@@ -9,7 +9,7 @@
 import Foundation
 
 
-
+//Exstension for double data type for rounding numbers to specified number of decimal places
 extension Double {
     func rounded(toPlaces places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
